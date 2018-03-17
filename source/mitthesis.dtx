@@ -4,7 +4,7 @@
 %</driver>
 %<*class>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{mitthesis}[2018/03/16 v2.0 Class for MIT theses]
+\ProvidesClass{mitthesis}[2018/03/16 v2.0 LaTeX class for theses at MIT]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -47,7 +47,7 @@
 %\GetFileInfo{\jobname.dtx}
 %
 %\title{^^A
-%  \textsf{mitthesis} --- Class for MIT theses\thanks{^^A
+%  \textsf{mitthesis} --- LaTeX class for theses at MIT\thanks{^^A
 %    This file describes version \fileversion, last revised \filedate.^^A
 %  }^^A
 %}
@@ -66,6 +66,8 @@
 %  \PrintChanges
 %  \PrintIndex
 %}
+%
+% Based on the ``Specifications for Thesis Preparation''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}}.
 %
 %\section{Basic usage}
 %
@@ -168,9 +170,6 @@
 %\changes{v0.1}{1987}{Original version (Stephen Gildea)}
 %
 %    \begin{macrocode}
-% LaTeX format for theses at MIT
-% Based on "Specifications for Thesis Preparation"
-%
 % `vi' and `upcase' options by Krishna Sethuraman - krishna@athena.mit.edu
 % Margins and heading types by Peter Nuth  - nuth@ai.mit.edu
 % Title and abstract page by Stephen Gildea - gildea@erl.mit.edu
@@ -222,7 +221,7 @@
 % FOR ANY PARTICULAR PURPOSE.
 %    \end{macrocode}
 %
-% \subsection{Option definitions}
+% \subsection{Package options}
 %
 %    \begin{macrocode}
 \def\mystretch{1.5}		% Double spacing hack
