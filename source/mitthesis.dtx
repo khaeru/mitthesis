@@ -20,6 +20,28 @@
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+% https://tex.stackexchange.com/a/74113
+\makeatletter
+\@ifdefinable{\org@changes@}{%
+  \let\org@changes@\changes@
+  \@ifdefinable{\my@changes}{%
+    \def\my@changes v#1.#2\@nil{%
+      \org@changes@{v#1.\six@digits{#2}=v#1.#2}%
+    }%
+    \newcommand*{\six@digits}[1]{%
+      \ifnum#1<100000 0\fi
+      \ifnum#1<10000 0\fi
+      \ifnum#1<1000 0\fi
+      \ifnum#1<100 0\fi
+      \two@digits{#1}%
+    }%
+    \renewcommand*{\changes@}[1]{%
+      \my@changes#1\@nil
+    }%
+  }%
+}
+\makeatother
+% end 74113
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
@@ -77,70 +99,42 @@
 %
 % \subsection{Original \texttt{.cls} file header comments}
 %
+% ^^A Note that after v1.7 the numbering seemed to be restarted. I've renumbered them; the version in parentheses is the original.
+%\changes{v1.15}{2012/02/15 15:48:16 (as "1.9")}{Tweak the "permission" statement per the Libraries' specs (\texttt{jdreed})}
+%\changes{v1.14}{2009/07/27 14:23:50 (as "1.8")}{Added changing draft mark (\texttt{boojum})}
+%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{Added leftblank option (\texttt{boojum})}
+%\changes{v1.12}{2002/04/18 14:10:08 (as "1.5")}{Changed doublespace into setspace for 2e compliance (\texttt{boojum})}
+%\changes{v1.11}{2001/02/08 18:57:13 (as "1.4")}{Turned two newpages into cleardoublepages (\texttt{boojum})}
+%\changes{v1.10}{2000/08/14 14:53:29 (as "1.3")}{Commented out footheight, which is relevant for drafthead (\texttt{boojum})}
+%\changes{v1.9}{1999/10/21 14:51:33 (as "1.2")}{Changed references to documentstyle to documentclass in comments (\texttt{boojum})}
+%\changes{v1.8}{1999/10/21 14:39:31 (as "1.1")}{Initial revision (\texttt{boojum})}
+% ^^A Note that around here the numbering seemed to be restarted.
+%\changes{v1.7}{1998/04/01 20:45:34}{Removed offending phrase ", and to grant others the right to do so" from copyright notice (\texttt{othomas})}
+%\changes{v1.6}{1996/06/26 15:07:29}{Safety checkin (\texttt{othomas})}
+%\changes{v1.5}{1993/06/07 15:38:50}{Altered 'vi' option copyright wording to comply with new Institute Archives requirements and MIT lawyers (\texttt{starflt})}
+%\changes{v1.4}{1992/08/19 16:51:06}{Updated Course 6 title page for new permissions (\texttt{lwvanels})}
+%\changes{v1.3}{1992/04/23 10:16:15}{Fixed comment character in rcs file (\texttt{epeisach})}
+%\changes{v1.2}{1992/04/22 13:12:02}{Fixes for 1991 course 6 requirements (\texttt{epeisach})}
+%\changes{v1.2}{1992/04/22 13:12:02}{Phrase "and to grant others the right to do so" has been added to permission clause (\texttt{epeisach})}
+%\changes{v1.2}{1992/04/22 13:12:02}{Second copy of abstract is not counted as separate pages so numbering works out (\texttt{epeisach})}
+%\changes{v1.1}{1990/05/04 11:45:53}{Initial revision (\texttt{lwvanels})}
+% ^^A Note that before here the revisions were not numbered; I've made up numbers.
+%\changes{v0.4}{1990}{Documentclass options (vi and upcase) (\texttt{krishna})}
+%\changes{v0.4}{1990}{Changes to copyright notice (\texttt{krishna})}
+%\changes{v0.3}{1998}{Pagestyle and header generation (Peter Nuth)}
+%\changes{v0.2}{1987}{Pagestyle and header generation (Peter Nuth)}
+%\changes{v0.1}{1987}{Original version (Stephen Gildea)}
+%
 %    \begin{macrocode}
-
-% $Log: mitthesis.cls,v $
-% Revision 1.9  2012/02/15 15:48:16  jdreed
-% Tweak the "permission" statement per the Libraries' specs
-% retrieved 15-Feb-2012
-%
-% Revision 1.8  2009/07/27 14:23:50  boojum
-% added changing draft mark
-%
-% Revision 1.6  2005/05/13 19:57:40  boojum
-% added leftblank option
-%
-% Revision 1.5  2002/04/18 14:10:08  boojum
-% changed doublespace into setspace for 2e compliance
-%
-% Revision 1.4  2001/02/08 18:57:13  boojum
-% turned two newpages into cleardoublepages
-%
-% Revision 1.3  2000/08/14 14:53:29  boojum
-% commented out footheight, which is relevant for drafthead
-%
-% Revision 1.2  1999/10/21 14:51:33  boojum
-% changed references to documentstyle to documentclass in comments
-%
-% Revision 1.1  1999/10/21 14:39:31  boojum
-% Initial revision
-%
-%Revision 1.7  1998/04/01  20:45:34  othomas
-%removed offending phrase ", and to grant others the right to do so" from copyright notice.
-%
-%Revision 1.6  96/06/26  15:07:29  othomas
-%safety checkin.
-%
-%Revision 1.5  93/06/07  15:38:50  starflt
-%Altered 'vi' option copyright wording to comply with new Institute
-%Archives requirements and MIT lawyers.
-%
-%Revision 1.4  92/08/19  16:51:06  lwvanels
-%Updated Course 6 title page for new permissions.
-%
-%Revision 1.3  92/04/23  10:16:15  epeisach
-%Fixed comment character in rcs file
-%
-%Revision 1.2  92/04/22  13:12:02  epeisach
-%Fixes for 1991 course 6 requirements
-%Phrase "and to grant others the right to do so" has been added to
-%permission clause
-%Second copy of abstract is not counted as separate pages so numbering works
-%out
-%
-%Revision 1.1  90/05/04  11:45:53  lwvanels
-%Initial revision
-
-%
 % LaTeX format for theses at MIT
 % Based on "Specifications for Thesis Preparation"
-
+%
 % `vi' and `upcase' options by Krishna Sethuraman - krishna@athena.mit.edu
 % Margins and heading types by Peter Nuth  - nuth@ai.mit.edu
 % Title and abstract page by Stephen Gildea - gildea@erl.mit.edu
 % Look in this directory for example file mitthesis.doc
 % Also for propcover.tex - Boilerplate for PHD proposal.
-
+%
 %%%% New options:
 %
 % Option `twoside':
@@ -220,14 +214,6 @@
 %
 %%%%%%%%%%%
 %
-% Documentclass options (vi and upcase) and changes to copyright notice
-%	Copyright (c) 1990, by Krishna Sethuraman.
-%
-% Pagestyle and header generation
-%	Copyright (c) 1987, 1988 by Peter Nuth
-%
-% Original version
-%	 Copyright (c) 1987 by Stephen Gildea
 % Permission to copy all or part of this work is granted, provided
 % that the copies are not made or distributed for resale, and that
 % the copyright notice and this notice are retained.
