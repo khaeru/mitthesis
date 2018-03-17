@@ -11,12 +11,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[numbered]{hypdoc}
-\usepackage{listings}
-\lstset{
-  gobble=1,
-  basicstyle=\small\ttfamily,
-  columns=fullflexible,
-  keepspaces=true}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -75,25 +69,73 @@
 %
 %\section{Basic usage}
 %
+%\subsection{Preamble}
+%
 % To use this style, say something like (for dull, boring thesis format):
-%\begin{lstlisting}
+%\begin{verbatim}
 %\documentclass[12pt]{mitthesis}
 %\pagestyle{plain}
-%\end{lstlisting}
+%\end{verbatim}
 %
 % \ldots or, for fast drafts:
-%\begin{lstlisting}
+%\begin{verbatim}
 %\documentclass[11pt,singlespace,draft]{mitthesis}
 %\pagestyle{drafthead}
-%\end{lstlisting}
+%\end{verbatim}
 %
 % \ldots or, for Tech Reports:
-%\begin{lstlisting}
+%\begin{verbatim}
 %\documentclass[12pt,twoside]{mitthesis}
 %\pagestyle{headings}
-%\end{lstlisting}
+%\end{verbatim}
 %
 % \ldots or some other combination.
+%
+%\subsection{The title page}
+% Parameters to initialize for boilerplate page include the following:
+%\begin{verbatim}
+%\title{Mixed Circular Cylindrical Shells}
+%\author{J. Casey Salas}
+%\prevdegrees{B.S., University of California (1978) \\
+%  S.M., Massachusetts Institute of Technology (1981)}
+%\department{Department of Electrical Engineering and Computer Science}
+%\degree{Doctor of Philosophy}
+%\end{verbatim}
+%
+% If the thesis is for two degrees simultaneously, list them both separated by |\and| like this:
+%\begin{verbatim}
+%\degree{Doctor of Philosophy \and Master of Science}
+%\degreemonth{February}
+%\degreeyear{1987}
+%\thesisdate{December 10, 1986}
+%\end{verbatim}
+%
+% If the thesis is copyright by the Institute, leave this line out and the standard copyright line will be used instead.
+%\begin{verbatim}
+%\copyrightnotice{J. Casey Salas, 1986}
+%\end{verbatim}
+%
+% If there is more than one supervisor, use the |\supervisor| command once for each.
+%\begin{verbatim}
+%\supervisor{John D. Galli}{Director, Sound Instrument Laboratory}
+%\end{verbatim}
+%
+% This is the \emph{department} committee chairman, not the \emph{thesis} committee chairman:
+%\begin{verbatim}
+%\chairman{Arthur C. Smith}%
+%  {Chairman, Departmental Committee on Graduate Students}
+%\end{verbatim}
+%
+% Make the titlepage based on the above information. If you need something special and can't use the standard form, you can specify the exact text of the titlepage yourself. Put it in a |titlepage| environment and leave blank lines where you want vertical space. The spaces will be adjusted to fill the entire page. The dotted lines for the signatures are made with the \cmd{\signature} command.
+%
+%\subsection{The abstract}
+%
+% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself. If you need more control over the format of the page, you can use the |abstract| environment, which puts the word "Abstract" at the beginning and single spaces its text.
+%\begin{verbatim}
+%\begin{abstractpage}
+%  Abstract goes here.
+%\end{abstractpage}
+%\end{verbatim}
 %
 % \section{Implementation}
 %
@@ -157,50 +199,6 @@
 %
 % Pagestyle `drafthead':
 %   Puts the date and the label ``*DRAFT*'' in the footer.
-%
-%%%%%%%%%%
-%
-%%%% Parameters to initialize for boilerplate page:
-%
-%	\title{Mixed Circular Cylindrical Shells}
-% 	\author{J. Casey Salas}
-% 	\prevdegrees{B.S., University of California (1978) \\
-%		     S.M., Massachusetts Institute of Technology (1981)}
-% 	\department{Department of Electrical Engineering and Computer Science}
-% 	\degree{Doctor of Philosophy}
-%% If the thesis is for two degrees simultaneously, list them both
-%% separated by \and like this:
-% 	\degree{Doctor of Philosophy \and Master of Science}
-% 	\degreemonth{February}
-% 	\degreeyear{1987}
-% 	\thesisdate{December 10, 1986}
-%% If the thesis is copyright by the Institute, leave this line out and
-%% the standard copyright line will be used instead.
-% 	\copyrightnotice{J. Casey Salas, 1986}
-%% If there is more than one supervisor, use the \supervisor command
-%% once for each.
-% 	\supervisor{John D. Galli}{Director, Sound Instrument Laboratory}
-%% This is the department committee chairman, not the thesis committee chairman
-% 	\chairman{Arthur C. Smith}
-%		 {Chairman, Departmental Committee on Graduate Students}
-%% Make the titlepage based on the above information.  If you need
-%% something special and can't use the standard form, you can specify
-%% the exact text of the titlepage yourself.  Put it in a titlepage
-%% environment and leave blank lines where you want vertical space.
-%% The spaces will be adjusted to fill the entire page.  The dotted
-%% lines for the signatures are made with the \signature command.
-%
-%% The abstractpage environment sets up everything on the page except
-%% the text itself.  The title and other header material are put at the
-%% top of the page, and the supervisors are listed at the bottom.  A
-%% new page is begun both before and after.  Of course, an abstract may
-%% be more than one page itself.  If you need more control over the
-%% format of the page, you can use the abstract environment, which puts
-%% the word "Abstract" at the beginning and single spaces its text.
-%
-% 	\begin{abstractpage}
-%	    Abstract goes here.
-%	\end{abstractpage}
 %
 %%%%%%%% Newer additions
 %
