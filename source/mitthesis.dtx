@@ -8,12 +8,16 @@
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
+\usepackage{booktabs}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[numbered]{hypdoc}
+% Features of doc, ltxdoc, and hypdoc
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+% \end, \gdef, \global, \hbox, \ifnum don't work in this command
+\DoNotIndex{\\,\advance,\arabic,\addtolength,\baselineskip,\baselinestretch,\begin,\bf,\ngroup,\centering,\cleardoublepage,\clearpage,\CurrentOption,\DeclareOption,\def,\dotfill,\doublespace,\egroup,\else,\expandafter,\fi,\hfil,\input,\Large,\large,\let,\LoadClass,\newbox,\newcommand,\newif,\newpage,\noindent,\par,\PassOptionsToClass,\ProcessOptions,\raggedleft,\renewcommand,\rm,\sc,\setlength,\sl,\small,\thechapter,\thepage,\thesection,\today,\typeout,\uppercase,\usepackage,\vbox,\vfill}
 % https://tex.stackexchange.com/a/74113
 \makeatletter
 \@ifdefinable{\org@changes@}{%
@@ -36,6 +40,7 @@
 }
 \makeatother
 % end 74113
+\newcommand\email[1]{\href{mailto:#1}{\ttfamily #1}}
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
@@ -47,7 +52,7 @@
 %\GetFileInfo{\jobname.dtx}
 %
 %\title{^^A
-%  \textsf{mitthesis} --- LaTeX class for theses at MIT\thanks{^^A
+%  \textsf{mitthesis} --- \LaTeX\ class for theses at MIT\thanks{^^A
 %    This file describes version \fileversion, last revised \filedate.^^A
 %  }^^A
 %}
@@ -60,16 +65,13 @@
 %
 %\tableofcontents
 %
-%\changes{v2.0}{2018/03/16}{Repackaged in .dtx}
+%\changes{v2.0}{2018/03/16}{Repackaged in .dtx (\texttt{pnk})}
 %
-%\StopEventually{^^A
-%  \PrintChanges
-%  \PrintIndex
-%}
-%
-% Based on the ``Specifications for Thesis Preparation''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}}.
+%\StopEventually{}
 %
 %\section{Basic usage}
+%
+% This class is based on the ``Specifications for Thesis Preparation.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} If there is any conflict between \LaTeX\ output using this class and the official specifications, the official specifications should take precedence.
 %
 %\subsection{Preamble}
 %
@@ -132,21 +134,21 @@
 %
 %\subsection{The abstract}
 %
-% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself. If you need more control over the format of the page, you can use the |abstract| environment, which puts the word "Abstract" at the beginning and single spaces its text.
+% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself.
 %\begin{verbatim}
 %\begin{abstractpage}
 %  Abstract goes here.
 %\end{abstractpage}
 %\end{verbatim}
 %
-% \section{Implementation}
+% If you need more control over the format of the page, you can use the |abstract| environment, which puts the word "Abstract" at the beginning and single spaces its text.
 %
-% \subsection{Original \texttt{.cls} file header comments}
+% \section{Implementation}
 %
 % ^^A Note that after v1.7 the numbering seemed to be restarted. I've renumbered them; the version in parentheses is the original.
 %\changes{v1.15}{2012/02/15 15:48:16 (as "1.9")}{Tweak the "permission" statement per the Libraries' specs (\texttt{jdreed})}
 %\changes{v1.14}{2009/07/27 14:23:50 (as "1.8")}{Added changing draft mark (\texttt{boojum})}
-%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{Added leftblank option (\texttt{boojum})}
+%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{Added |leftblank| option (\texttt{boojum})}
 %\changes{v1.12}{2002/04/18 14:10:08 (as "1.5")}{Changed doublespace into setspace for 2e compliance (\texttt{boojum})}
 %\changes{v1.11}{2001/02/08 18:57:13 (as "1.4")}{Turned two newpages into cleardoublepages (\texttt{boojum})}
 %\changes{v1.10}{2000/08/14 14:53:29 (as "1.3")}{Commented out footheight, which is relevant for drafthead (\texttt{boojum})}
@@ -155,7 +157,7 @@
 % ^^A Note that around here the numbering seemed to be restarted.
 %\changes{v1.7}{1998/04/01 20:45:34}{Removed offending phrase ", and to grant others the right to do so" from copyright notice (\texttt{othomas})}
 %\changes{v1.6}{1996/06/26 15:07:29}{Safety checkin (\texttt{othomas})}
-%\changes{v1.5}{1993/06/07 15:38:50}{Altered 'vi' option copyright wording to comply with new Institute Archives requirements and MIT lawyers (\texttt{starflt})}
+%\changes{v1.5}{1993/06/07 15:38:50}{Altered |vi| option copyright wording to comply with new Institute Archives requirements and MIT lawyers (\texttt{starflt})}
 %\changes{v1.4}{1992/08/19 16:51:06}{Updated Course 6 title page for new permissions (\texttt{lwvanels})}
 %\changes{v1.3}{1992/04/23 10:16:15}{Fixed comment character in rcs file (\texttt{epeisach})}
 %\changes{v1.2}{1992/04/22 13:12:02}{Fixes for 1991 course 6 requirements (\texttt{epeisach})}
@@ -163,35 +165,24 @@
 %\changes{v1.2}{1992/04/22 13:12:02}{Second copy of abstract is not counted as separate pages so numbering works out (\texttt{epeisach})}
 %\changes{v1.1}{1990/05/04 11:45:53}{Initial revision (\texttt{lwvanels})}
 % ^^A Note that before here the revisions were not numbered; I've made up numbers.
-%\changes{v0.4}{1990}{Documentclass options (vi and upcase) (\texttt{krishna})}
+%\changes{v0.4}{1990}{|vi| and |upcase| options (\texttt{krishna})}
 %\changes{v0.4}{1990}{Changes to copyright notice (\texttt{krishna})}
 %\changes{v0.3}{1998}{Pagestyle and header generation (Peter Nuth)}
 %\changes{v0.2}{1987}{Pagestyle and header generation (Peter Nuth)}
-%\changes{v0.1}{1987}{Original version (Stephen Gildea)}
+%\changes{v0.1}{1987}{Original version with title \& abstract page (Stephen Gildea)}
+%
+% Remaining header comments from the original |.cls| file:
 %
 %    \begin{macrocode}
-% `vi' and `upcase' options by Krishna Sethuraman - krishna@athena.mit.edu
-% Margins and heading types by Peter Nuth  - nuth@ai.mit.edu
-% Title and abstract page by Stephen Gildea - gildea@erl.mit.edu
 % Look in this directory for example file mitthesis.doc
 % Also for propcover.tex - Boilerplate for PHD proposal.
 %
-%%%% New options:
+% New options:
 %
 % Option `twoside':
 %   Good for producing Tech Reports.
 %   The default is single-sided printing, which is what M.I.T. wants on the
 %   thesis document itself.
-%
-% Option `singlespace':
-%   Good for drafts.
-%   Double-spaced theses are the default.
-%   That is what M.I.T. asks for in the formal specifications.
-%
-% 	Note that MIT does not REQUIRE all theses to be double-spaced anymore.
-% 	Someone in the library system said that it's OK to be single-spaced.
-% 	(Regardless of what the specs. say...)
-%   To get singlespacing in an area - Use  the 'singlespace' environment.
 %
 % Option `draft':
 %   Puts `overfull' boxes at the end of lines that are too long.
@@ -208,21 +199,17 @@
 % 		example on page 17 of the *Specifications for Thesis
 % 		Preparation*, (revised 1989)
 % Also added ``All Rights Reserved'' to default copyright notice.
-%
-%%%%%%%%%%%
-%
-% Permission to copy all or part of this work is granted, provided
-% that the copies are not made or distributed for resale, and that
-% the copyright notice and this notice are retained.
-%
-% THIS WORK IS PROVIDED ON AN "AS IS" BASIS.  THE AUTHOR PROVIDES NO
-% WARRANTY WHATSOEVER, EITHER EXPRESS OR IMPLIED, REGARDING THE WORK,
-% INCLUDING WARRANTIES WITH RESPECT TO ITS MERCHANTABILITY OR FITNESS
-% FOR ANY PARTICULAR PURPOSE.
 %    \end{macrocode}
 %
 % \subsection{Package options}
 %
+% \DescribeMacro{doublespace}
+% \DescribeMacro{singlespace}
+% Singlespacing is good for drafts. Double-spaced theses are the default. That is what M.I.T. asks for in the formal specifications.
+%
+% Note that MIT does not REQUIRE all theses to be double-spaced anymore. Someone in the library system said that it's OK to be single-spaced. (Regardless of what the specs. say...)
+%
+% To get single spacing in an area, use the |singlespace| environment.
 %    \begin{macrocode}
 \def\mystretch{1.5}		% Double spacing hack
 \DeclareOption{doublespace}{}	% This is default
@@ -231,7 +218,6 @@
     \typeout{Single spaced}
     \def\mystretch{1}}
 
-%% `vi' and `upcase' document style options.  Krishna Sethuraman (1990)
 \newcount\vithesis
 \DeclareOption{vi}{\typeout{Course VI/VIII thesis style.}\advance\vithesis by1}
 \vithesis=0
@@ -240,7 +226,6 @@
 	\gdef\choosecase#1{\uppercase\expandafter{#1}}}
 \def\choosecase#1{#1}
 
-%% leftblank option by Kevin Fu
 \newif\if@leftblank \@leftblankfalse
 
 \DeclareOption{leftblank}{\typeout{Intentionally Leaving Pages Blank}
@@ -255,17 +240,10 @@
 
 \usepackage{setspace}
 
-% Note - doublespace.sty has some float-related troubles in
-% combination with graphics or color, and is not officially compliant
-% with 2e.  setspace is a replacement which is 2e-compliant.
-
-% Read the doublespace style that we got from Rochester:
-%\input setdoublespace.sty
-
 \def\baselinestretch{\mystretch}	% Double spacing hack
 %    \end{macrocode}
 %
-%\subsection{Margins and formatting paramters}
+%\subsection{Margins and formatting parameters}
 %\paragraph{Margins.}
 % Note we want 1in top margin assuming no header line, so push header into 1in
 % margin. Draft mode brings the header back down.
@@ -412,20 +390,12 @@
 \fi
 % If using the report style, use - instead of . in the figure number.
 \@ifundefined{thechapter}{}{\def\thefigure{\thechapter-\arabic{figure}}}
-
-
-%%%%%%%%%  End of Style parameters %%%%
-
-% Here's Gildea's Boilerplate Stuff.
-% Copyright (c) 1987 by Stephen Gildea
-% Permission to copy all or part of this work is granted, provided
-% that the copies are not made or distributed for resale, and that
-% the copyright notice and this notice are retained.
-
-%% Define all the pieces that go on the title page and the abstract.
-
-% \title and \author already exist
-
+%    \end{macrocode}
+%
+%\subsection{The title page}
+% Define all the pieces that go on the title page and the abstract. \cmd{\title} and \cmd{\author} already exist.
+%
+%    \begin{macrocode}
 \def\prevdegrees#1{\gdef\@prevdegrees{#1}}
 \def\@prevdegrees{}
 
@@ -460,7 +430,7 @@
 \def\copyrightnotice#1{\copyrightnoticetext{\copyright\ #1.  All rights
 reserved.\par\permission}}
 
-% Occacionally you will need to exactly specify the text of the
+% Occasionally you will need to exactly specify the text of the
 % copyright notice.  The \copyrightnoticetext command is then useful.
 \long\def\copyrightnoticetext#1{\gdef\@copyrightnotice{#1}}
 \def\@copyrightnotice{\copyright\ \Mit\ \@degreeyear.  All rights reserved.}
@@ -557,9 +527,9 @@ requirements for the \@degreeword\ of \\
 \par
 \begin{abstract}}
 
-%% Changed from \unvbox to \unvcopy for use with multiple copies of abstract
-%% page.
-%% Krishna Sethuraman (1990)
+% Changed from \unvbox to \unvcopy for use with multiple copies of abstract
+% page.
+% Krishna Sethuraman (1990)
 \def\endabstractpage{\end{abstract}\noindent
  \unvcopy\@abstractsupervisor \newpage}
 
@@ -610,5 +580,51 @@ requirements for the \@degreeword\ of \\
 \def\endabstract{\par}
 %    \end{macrocode}
 %\end{environment}
+%
+%\PrintChanges
+%
+%\subsection{Notes}
+%
+% \paragraph{Versions.}
+% Initial revisions by Stephen Gildea, Peter Nuth and Krisha Sethuraman were not numbered, and were dated only by year; Paul Kishimoto assigned numbers 0.1--0.4 arbitrarily.
+%
+% After v1.7, the numbering seemed to be restarted, with the first change by Laura Baldwin reusing v1.1, and v1.7 in the new sequence omitted. These were renumbered v1.8 \emph{et seq.}, also by Paul Kishimoto. The |.dtx| source for this document contains the original numbers and also time and date stamps for versions from v1.1 onwards.
+%
+% \paragraph{License.}
+% The original |.cls| file contained the following copyright notice in one location, possibly left by Stephen Gildea:
+%
+%\begin{quotation}
+% Permission to copy all or part of this work is granted, provided that the copies are not made or distributed for resale, and that the copyright notice and this notice are retained.
+%
+% THIS WORK IS PROVIDED ON AN ``AS IS'' BASIS.  THE AUTHOR PROVIDES NO WARRANTY WHATSOEVER, EITHER EXPRESS OR IMPLIED, REGARDING THE WORK, INCLUDING WARRANTIES WITH RESPECT TO ITS MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE.
+%\end{quotation}
+%
+% \ldots and in another location only the first paragraph. Neither of these seems to be a verbatim match to any common open-source license---though the latter is similar to some variants of the MIT License,\footnote{\url{https://fedoraproject.org/wiki/Licensing:MIT?rd=Licensing/MIT}} except with a clause (``not made or distributed for resale'') that seems to impose a non-commercial restriction.
+%
+%\subsection{Contributors}
+%
+% Assembled from comments left in the original |.cls| file:
+%
+%\begin{tabular}{clr}
+%\toprule
+%ID & Name & E-mail \\
+%\midrule
+%\texttt{pnk} & Paul Natsuo Kishimoto & \email{mail@paul.kishimoto.name} \\
+%? & Kevin Fu & ? \\
+%  & ---|leftblank| option & \\
+%\texttt{jdreed} & Jonathan Reed & ? \\
+%\texttt{boojum} & Laura Baldwin & ? \\
+%\texttt{othomas} & Oliver Thomas & ? \\
+%\texttt{starflt} & Derrick Kong & ? \\
+%\texttt{lwvanels} & Lucien Van Elsen & ? \\
+%\texttt{epeisach} & Ezra Peisach & ? \\
+%\texttt{krishna} & Krishna Sethuraman & \email{krishna@athena.mit.edu} \\
+%? & Peter Nuth & \email{nuth@ai.mit.edu} \\
+%? & Stephen Gildea & \email{gildea@erl.mit.edu} \\
+%\bottomrule
+%\end{tabular}
+%
+%\clearpage
+%\PrintIndex
 %
 %\Finale
