@@ -4,3 +4,4 @@ This is an experiment to modernize the [‘official’ template](http://web.mit.
 
 ## TODO
 - Migrate `demo/README.*` and `demo/main.bib.info` content to this file.
+- Warn or abort on `report` options (eg. `10pt`) that are incompatible with the MIT Libraries specifications.

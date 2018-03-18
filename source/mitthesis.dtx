@@ -57,7 +57,7 @@
 %  }^^A
 %}
 %\author{^^A
-%  Paul Natsuo Kishimoto\thanks{E-mail: mail@paul.kishimoto.name}^^A
+%  packaged by Paul Natsuo Kishimoto\thanks{E-mail: \email{mail@paul.kishimoto.name}}^^A
 %}
 %\date{Released \filedate}
 %
@@ -69,9 +69,11 @@
 %
 %\StopEventually{}
 %
-%\section{Basic usage}
+%\section{Usage}
 %
-% This class is based on the ``Specifications for Thesis Preparation.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} If there is any conflict between \LaTeX\ output using this class and the official specifications, the official specifications should take precedence.
+% This class is based on MIT Libraries' official \emph{Specifications for Thesis Preparation}.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} Throughout the document, quotations are taken directly from the specifications to explain defaults and coding choices.
+%
+% However, Please verify your thesis' formatting and copyright assignment before submission. If you notice any discrepancies between this class, the accompanying templates, and the official specifications, the latter should take precedence. Please also let ``us'' know by e-mailing \email{thesis@mit.edu}.\footnote{At the moment it's not clear who this address forwards to; the official specifications give \email{mit-theses@mit.edu} as a contact address}
 %
 %\subsection{Example documents}
 %
@@ -258,7 +260,23 @@
 %    \end{macrocode}
 %\end{macro}
 %
-% Thesis looks much like report
+%\begin{macro}{12pt}
+% Set the default font size; give |11pt| or |10pt| to override. However note:
+%
+%\begin{quote}\itshape
+%``TYPEFACE AND SIZE
+%
+%For the main body of the text, including appendices and front matter, font size should be at least 11-point and should not be script or italic.''
+%\end{quote}
+%
+%\changes{v2.0}{2018}{make default (\texttt{pnk})}
+%
+%    \begin{macrocode}
+\ExecuteOptions{12pt}
+%    \end{macrocode}
+%\end{macro}
+% Pass remaining options to the |report| document class.
+%
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions
