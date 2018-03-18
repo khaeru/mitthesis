@@ -17,7 +17,7 @@
 \CodelineIndex
 \RecordChanges
 % \end, \gdef, \global, \hbox, \ifnum don't work in this command
-\DoNotIndex{\\,\advance,\arabic,\addtolength,\baselineskip,\baselinestretch,\begin,\bf,\ngroup,\centering,\cleardoublepage,\clearpage,\CurrentOption,\DeclareOption,\def,\dotfill,\doublespace,\egroup,\else,\expandafter,\fi,\hfil,\input,\Large,\large,\let,\LoadClass,\newbox,\newcommand,\newif,\newpage,\noindent,\par,\PassOptionsToClass,\ProcessOptions,\raggedleft,\renewcommand,\rm,\sc,\setlength,\sl,\small,\thechapter,\thepage,\thesection,\today,\typeout,\uppercase,\usepackage,\vbox,\vfill}
+\DoNotIndex{\\,\advance,\arabic,\addtolength,\baselineskip,\baselinestretch,\begin,\bf,\ngroup,\centering,\cleardoublepage,\clearpage,\CurrentOption,\DeclareOption,\def,\dotfill,\doublespace,\egroup,\else,\expandafter,\fi,\hfil,\input,\Large,\large,\let,\LoadClass,\newbox,\newcommand,\newcount,\newcounter,\newif,\newpage,\noindent,\par,\PassOptionsToClass,\ProcessOptions,\raggedleft,\renewcommand,\rm,\sc,\setlength,\sl,\small,\subsection,\thechapter,\thepage,\thesection,\today,\typeout,\uppercase,\usepackage,\vbox,\vfill,\vskip}
 % https://tex.stackexchange.com/a/74113
 \makeatletter
 \@ifdefinable{\org@changes@}{%
@@ -148,7 +148,7 @@
 % ^^A Note that after v1.7 the numbering seemed to be restarted. I've renumbered them; the version in parentheses is the original.
 %\changes{v1.15}{2012/02/15 15:48:16 (as "1.9")}{Tweak the "permission" statement per the Libraries' specs (\texttt{jdreed})}
 %\changes{v1.14}{2009/07/27 14:23:50 (as "1.8")}{Added changing draft mark (\texttt{boojum})}
-%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{Added |leftblank| option (\texttt{boojum})}
+%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{Added |leftblank| option (Kevin Fu via \texttt{boojum})}
 %\changes{v1.12}{2002/04/18 14:10:08 (as "1.5")}{Changed doublespace into setspace for 2e compliance (\texttt{boojum})}
 %\changes{v1.11}{2001/02/08 18:57:13 (as "1.4")}{Turned two newpages into cleardoublepages (\texttt{boojum})}
 %\changes{v1.10}{2000/08/14 14:53:29 (as "1.3")}{Commented out footheight, which is relevant for drafthead (\texttt{boojum})}
@@ -190,72 +190,84 @@
 % Pagestyle `drafthead':
 %   Puts the date and the label ``*DRAFT*'' in the footer.
 %
-%%%%%%%% Newer additions
-%
-% documentclass options -
-% vi		For MIT course VI or VIII thesis - will copyright the thesis to
-% 		you while giving MIT permission to copy and distribute it.
-% upcase	Will put much of the cover page in uppercase, as per the
-% 		example on page 17 of the *Specifications for Thesis
-% 		Preparation*, (revised 1989)
 % Also added ``All Rights Reserved'' to default copyright notice.
 %    \end{macrocode}
 %
-% \subsection{Package options}
+%\subsection{Class options}
 %
-% \DescribeMacro{doublespace}
-% \DescribeMacro{singlespace}
-% Singlespacing is good for drafts. Double-spaced theses are the default. That is what M.I.T. asks for in the formal specifications.
+%\begin{macro}{singlespace}
+% Single spacing is good for drafts. Double-spaced theses (\DescribeMacro{doublespace}) are the default. That is what M.I.T. asks for in the formal specifications.
 %
 % Note that MIT does not REQUIRE all theses to be double-spaced anymore. Someone in the library system said that it's OK to be single-spaced. (Regardless of what the specs. say...)
 %
 % To get single spacing in an area, use the |singlespace| environment.
 %    \begin{macrocode}
-\def\mystretch{1.5}		% Double spacing hack
-\DeclareOption{doublespace}{}	% This is default
-				% So we do not read this style twice
-\DeclareOption{singlespace}{		% If he explicitly wants single spacing
-    \typeout{Single spaced}
-    \def\mystretch{1}}
-
+\def\mystretch{1.5}  % Double spacing hack
+\DeclareOption{doublespace}{}  % This is default
+% So we do not read this style twice
+\DeclareOption{singlespace}{  % If he explicitly wants single spacing
+  \typeout{Single spaced}
+  \def\mystretch{1}}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{vi}
+% For MIT course VI or VIII theses. Will copyright the thesis to you while giving MIT permission to copy and distribute it.
+%    \begin{macrocode}
 \newcount\vithesis
 \DeclareOption{vi}{\typeout{Course VI/VIII thesis style.}\advance\vithesis by1}
 \vithesis=0
-
-\DeclareOption{upcase}{\typeout{Uppercase cover page.}
-	\gdef\choosecase#1{\uppercase\expandafter{#1}}}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{upcase}
+% Put much of the cover page in uppercase, as per the example on page 17 of the ``Specifications for Thesis Preparation.''
+%    \begin{macrocode}
+\DeclareOption{upcase}{%
+  \typeout{Uppercase cover page.}
+  \gdef\choosecase#1{\uppercase\expandafter{#1}}
+}
 \def\choosecase#1{#1}
-
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{leftblank}
+% Print ``This page intentionally left blank.'' on left pages.
+%
+%\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{added (Kevin Fu via \texttt{boojum})}
+%    \begin{macrocode}
 \newif\if@leftblank \@leftblankfalse
-
 \DeclareOption{leftblank}{\typeout{Intentionally Leaving Pages Blank}
 \@leftblanktrue}
-
-%  Thesis looks much like report
+%    \end{macrocode}
+%\end{macro}
+%
+% Thesis looks much like report
+%    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions
 \LoadClass{report}
-
+%    \end{macrocode}
+%
 % If the user wants single spacing, set baselinestretch=1.
-
+%
+%    \begin{macrocode}
 \usepackage{setspace}
-
-\def\baselinestretch{\mystretch}	% Double spacing hack
+\def\baselinestretch{\mystretch}  % Double spacing hack
 %    \end{macrocode}
 %
 %\subsection{Margins and formatting parameters}
 %\paragraph{Margins.}
-% Note we want 1in top margin assuming no header line, so push header into 1in
-% margin. Draft mode brings the header back down.
+% We want a one inch top margin assuming no header line, so push header into the one inch margin. Draft mode brings the header back down.
 %
 %    \begin{macrocode}
-\setlength{\oddsidemargin}{0.25in}	% 1.25in left margin
-\setlength{\evensidemargin}{0.25in}	% 1.25in left margin (even pages)
-\setlength{\topmargin}{0.0in}		% 1in top margin
-\setlength{\textwidth}{6.0in}		% 6.0in text - 1.25in rt margin
-\setlength{\textheight}{9in}		% Body ht for 1in margins
-\addtolength{\topmargin}{-\headheight}	% No header, so compensate
-\addtolength{\topmargin}{-\headsep}	% for header height and separation
+\setlength{\oddsidemargin}{0.25in}  % 1.25in left margin
+\setlength{\evensidemargin}{0.25in}  % 1.25in left margin (even pages)
+\setlength{\topmargin}{0.0in}  % 1in top margin
+\setlength{\textwidth}{6.0in}  % 6.0in text - 1.25in rt margin
+\setlength{\textheight}{9in}  % Body height for 1in margins
+\addtolength{\topmargin}{-\headheight}  % No header, so compensate
+\addtolength{\topmargin}{-\headsep}  % for header height and separation
 %    \end{macrocode}
 %
 % The next two macros compensate page style for headers and footers.
@@ -301,7 +313,7 @@
 % Format for draft of thesis.  Define our own PageStyle -
 % Just like headings, but has foot lines with the date and warning
 
-\if@twoside         % If two-sided printing.
+\if@twoside  % If two-sided printing.
 \def\ps@drafthead{
     \let\@mkboth\markboth
     \def\@oddfoot{\rm \today \hfil \sc \draftrmark}
@@ -309,11 +321,11 @@
     \def\@evenhead{\rm \thepage\hfil \sl \leftmark}
     \def\@oddhead{\hbox{}\sl \rightmark \hfil \rm\thepage}
     \def\chaptermark##1{\markboth {\uppercase{\ifnum \c@secnumdepth >\m@ne
-	\@chapapp\ \thechapter. \ \fi ##1}}{}}
+        \@chapapp\ \thechapter. \ \fi ##1}}{}}
     \def\sectionmark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\z@
-	\thesection. \ \fi ##1}}}
-    \pulldownheader				% Bring header down from edge
-    \pullupfooter				% Bring footer up
+        \thesection. \ \fi ##1}}}
+    \pulldownheader  % Bring header down from edge
+    \pullupfooter  % Bring footer up
 }
 \else               % If one-sided printing.
 \def\ps@drafthead{
@@ -321,38 +333,36 @@
     \def\@oddfoot{\rm \today \hfil \sc \draftrmark}
     \def\@oddhead{\hbox{}\sl \rightmark \hfil \rm\thepage}
     \def\chaptermark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\m@ne
-	\@chapapp\ \thechapter. \ \fi ##1}}}
-    \pulldownheader				% Bring header down from edge
-    \pullupfooter				% Bring footer up
+        \@chapapp\ \thechapter. \ \fi ##1}}}
+    \pulldownheader  % Bring header down from edge
+    \pullupfooter  % Bring footer up
 }
 \fi
-
-% I redefine these formats that were defined in report.sty
-% Definition of 'headings' page style
-%  Note the use of ##1 for parameter of \def\chaptermark inside the
-%  \def\ps@headings.
+%    \end{macrocode}
 %
-
-\if@twoside					% If two-sided printing.
+% Redefine these formats that were defined in |report.sty|. Definition of 'headings' page style. Note the use of |##1| for parameter of |\def\chaptermark| inside the |\def\ps@headings|.
+%
+%    \begin{macrocode}
+\if@twoside  % If two-sided printing.
 \def\ps@headings{\let\@mkboth\markboth
     \def\@oddfoot{}
-    \def\@evenfoot{}		% No feet.
-    \def\@evenhead{\rm \thepage\hfil \sl \leftmark}	% Left heading.
-    \def\@oddhead{\hbox{}\sl \rightmark \hfil \rm\thepage}	% Right heading.
+    \def\@evenfoot{}  % No feet.
+    \def\@evenhead{\rm \thepage\hfil \sl \leftmark}  % Left heading.
+    \def\@oddhead{\hbox{}\sl \rightmark \hfil \rm\thepage}  % Right heading.
     \def\chaptermark##1{\markboth {\uppercase{\ifnum \c@secnumdepth >\m@ne
-	\@chapapp\ \thechapter. \ \fi ##1}}{}}
+        \@chapapp\ \thechapter. \ \fi ##1}}{}}
     \def\sectionmark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\z@
-	\thesection. \ \fi ##1}}}
-    \pulldownheader				% Bring header down from edge
+        \thesection. \ \fi ##1}}}
+    \pulldownheader  % Bring header down from edge
 }
-\else						% If one-sided printing.
+\else  % If one-sided printing.
 \def\ps@headings{\let\@mkboth\markboth
     \def\@oddfoot{}
-    \def\@evenfoot{}		%     No feet.
-    \def\@oddhead{\hbox {}\sl \rightmark \hfil \rm\thepage}	% Heading.
+    \def\@evenfoot{}  % No feet.
+    \def\@oddhead{\hbox {}\sl \rightmark \hfil \rm\thepage}  % Heading.
     \def\chaptermark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\m@ne
-	\@chapapp\ \thechapter. \ \fi ##1}}}
-    \pulldownheader				% Bring header down from edge
+        \@chapapp\ \thechapter. \ \fi ##1}}}
+    \pulldownheader  % Bring header down from edge
 }
 \fi
 
@@ -363,9 +373,9 @@
     \def\@evenfoot{}
     \def\sectionmark##1{}
     \def\subsectionmark##1{}
-    \def\@evenhead{\rm \thepage\hfil\sl\leftmark\hbox {}}	%
-    \def\@oddhead{\hbox{}\sl\rightmark \hfil \rm\thepage}	%
-    \pulldownheader				% Bring header down from edge
+    \def\@evenhead{\rm \thepage\hfil\sl\leftmark\hbox {}}%
+    \def\@oddhead{\hbox{}\sl\rightmark \hfil \rm\thepage}%
+    \pulldownheader  % Bring header down from edge
 }
 
 % Redefine '/chapter' to always start on an odd page.
@@ -377,16 +387,16 @@
    \hbox{}\par\vfill\centerline%
    {THIS PAGE INTENTIONALLY LEFT BLANK}%
    \vfill\newpage\fi
-   \thispagestyle{plain}	% Page style of chapter page is 'plain'
-   \global\@topnum\z@		% Prevents figures from going at top of page.
-   \@afterindentfalse		% Suppresses indent in first paragraph.  Change
-   \secdef\@chapter\@schapter}	% to \@afterindenttrue to have indent.
+   \thispagestyle{plain}  % Page style of chapter page is 'plain'
+   \global\@topnum\z@  % Prevents figures from going at top of page.
+   \@afterindentfalse  % Suppresses indent in first paragraph.  Change
+   \secdef\@chapter\@schapter}  % to \@afterindenttrue to have indent.
 \else
-\def\chapter{\cleardoublepage	% Starts new page.
-   \thispagestyle{plain}	% Page style of chapter page is 'plain'
-   \global\@topnum\z@		% Prevents figures from going at top of page.
-   \@afterindentfalse		% Suppresses indent in first paragraph.  Change
-   \secdef\@chapter\@schapter}	% to \@afterindenttrue to have indent.
+\def\chapter{\cleardoublepage  % Starts new page.
+   \thispagestyle{plain}  % Page style of chapter page is 'plain'
+   \global\@topnum\z@  % Prevents figures from going at top of page.
+   \@afterindentfalse  % Suppresses indent in first paragraph.  Change
+   \secdef\@chapter\@schapter}  % to \@afterindenttrue to have indent.
 \fi
 % If using the report style, use - instead of . in the figure number.
 \@ifundefined{thechapter}{}{\def\thefigure{\thechapter-\arabic{figure}}}
@@ -395,37 +405,38 @@
 %\subsection{The title page}
 % Define all the pieces that go on the title page and the abstract. \cmd{\title} and \cmd{\author} already exist.
 %
+%\begin{macro}{\prevdegrees}
 %    \begin{macrocode}
 \def\prevdegrees#1{\gdef\@prevdegrees{#1}}
 \def\@prevdegrees{}
-
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\department}
+%    \begin{macrocode}
 \def\department#1{\gdef\@department{#1}}
-
-% If you are getting two degrees, use \and between the names.
-\def\degree#1{\setbox0\hbox{#1}	 %for side effect of setting \@degreeword
+%    \end{macrocode}
+%\end{macro}
+%
+% If you are getting two degrees, use \cmd{\and} between the names.
+%    \begin{macrocode}
+\def\degree#1{\setbox0\hbox{#1}  % for side effect of setting \@degreeword
   \gdef\@degree{#1}}
 
 % \and is used inside the \degree argument to separate two degrees
 \def\and{\gdef\@degreeword{degrees} \par and \par}
 \def\@degreeword{degree}
-
+%    \end{macrocode}
+%
 % The copyright notice stuff is a tremendous mess.
 %
-% \@copyrightnotice is used by \maketitle to actually put text on the
-% page; it defaults to ``Copyright MIT 19xx.  All rights reserved.''
-% \copyrightnoticetext takes an argument and defined \@copyrightnotice
-% to that argument.  \copyrightnotice takes an argument, and calls
-% \copyrightnoticetext with that argument, preceeded by a copyright
-% symbol and followed by ``All rights reserved.'' and the standard
-% permission notice.
+% \cmd{\@copyrightnotice} is used by \cmd{\maketitle} to actually put text on the page; it defaults to ``Copyright MIT 19xx.  All rights reserved.'' \cmd{\copyrightnoticetext} takes an argument and defined \cmd{\@copyrightnotice} to that argument.  \cmd{\copyrightnotice} takes an argument, and calls \cmd{\copyrightnoticetext} with that argument, preceeded by a copyright symbol and followed by ``All rights reserved.'' and the standard permission notice.
 %
-% If you use the 'vi' option, \copyrightnoticetext is used to set the
-% copyright to ``(C) Your Name, Current Year in Roman Numerals.''
-% followed by the permission notice.
-
-% If there is no \copyrightnotice command, it is asssumed that MIT
-% holds the copyright.  This commands adds the copyright symbol to the
-% beginning, and puts the standard permission notice below.
+% If you use the |vi| class option, \cmd{\copyrightnoticetext} is used to set the copyright to ``(C) Your Name, Current Year in Roman Numerals.'' followed by the permission notice.
+%
+% If there is no \cmd{\copyrightnotice} command, it is asssumed that MIT holds the copyright. This commands adds the copyright symbol to the beginning, and puts the standard permission notice below.
+%
+%    \begin{macrocode}
 %% ``All rights reserved'' added.  Krishna Sethuraman (1990)
 \def\copyrightnotice#1{\copyrightnoticetext{\copyright\ #1.  All rights
 reserved.\par\permission}}
@@ -434,36 +445,44 @@ reserved.\par\permission}}
 % copyright notice.  The \copyrightnoticetext command is then useful.
 \long\def\copyrightnoticetext#1{\gdef\@copyrightnotice{#1}}
 \def\@copyrightnotice{\copyright\ \Mit\ \@degreeyear.  All rights reserved.}
-
-%% `vi' documentclass option: Specifying this option automatically
-%% copyrights the thesis to the author and gives MIT permission to copy and
-%% distribute the document.  If you want, you can still specify
-%% \copyrightnotice{stuff} to copyright to someone else, or
-%% \copyrightnoticetext{stuff} to specify the exact text of the copyright
-%% notice.
+%    \end{macrocode}
+%
+% |vi| class option: Specifying this option automatically copyrights the thesis to the author and gives MIT permission to copy and distribute the document. If you want, you can still specify \cmd{\copyrightnotice}\marg{stuff} to copyright to someone else, or \cmd{\copyrightnoticetext}\marg{stuff} to specify the exact text of the copyright notice.
+%
+%    \begin{macrocode}
 \ifodd\vithesis \copyrightnoticetext{\copyright\ \@author,
 \uppercase\expandafter{\romannumeral\@degreeyear}.  All rights reserved.\par\permission}
 %% or just
 %%\@degreeyear}}
-\typeout{Copyright given to author,
-	permission to copy/distribute given to MIT.}
+\typeout{Copyright given to author, permission to copy/distribute given to MIT.}
 \else \typeout{Thesis document copyright MIT unless otherwise (manually) specified}
 \fi
-
+%    \end{macrocode}
+%
+% \begin{macro}{\thesisdate}
+%    \begin{macrocode}
 \def\thesisdate#1{\gdef\@thesisdate{#1}}
-
-% typically just a month and year
+%    \end{macrocode}
+% \end{macro}
+%
+%\DescribeMacro{\degreemonth}
+%\DescribeMacro{\degreeyear}
+% Typically just a month and year.
+%    \begin{macrocode}
 \def\degreemonth#1{\gdef\@degreemonth{#1}}
 \def\degreeyear#1{\gdef\@degreeyear{#1}}
-
-% Usage: \supervisor{name}{title}
-%        \chairman{name}{title}
-
-% since there can be more than one supervisor,
-% we build the appropriate boxes for the titlepage and
-% the abstractpage as the user makes multiple calls
-% to \supervisor
-\newbox\@titlesupervisor 	\newbox\@abstractsupervisor
+%    \end{macrocode}
+%
+%\DescribeMacro{\supervisor}
+%\DescribeMacro{\chairman}
+% Usage: \cmd{\supervisor}\marg{name}\marg{title} or
+%        \cmd{\chairman}\marg{name}\marg{title}.
+% The latter is for the department chairman, not the thesis committee chairman.
+%
+% Since there can be more than one supervisor, we build the appropriate boxes for the |titlepage| and the |abstractpage| as the user makes multiple calls to \cmd{\supervisor}
+%    \begin{macrocode}
+\newbox\@titlesupervisor
+\newbox\@abstractsupervisor
 
 \def\supervisor#1#2{\setbox\@titlesupervisor\vbox
   {\unvbox\@titlesupervisor \vskip 10pt% plus 1fil minus 1fil
@@ -473,11 +492,13 @@ reserved.\par\permission}}
   \vskip\baselineskip \def\baselinestretch{1}\@normalsize
   \par\noindent Thesis Supervisor: #1 \\ Title: #2}}
 
-% department chairman, not thesis committee chairman
 \def\chairman#1#2{\gdef\@chairmanname{#1}\gdef\@chairmantitle{#2}}
-
-%% `upcase' documentclass option: \choosecase is defined either as a dummy or
-%% a macro to change the (expanded) argument to uppercase.
+%    \end{macrocode}
+%
+%\begin{macro}{\maketitle}
+% If the |upcase| class option was given, \cmd{\choosecase} is defined to change the (expanded) argument to uppercase; otherwise, it is a dummy.
+%
+%    \begin{macrocode}
 \def\maketitle{\begin{titlepage}
 \large
 {\def\baselinestretch{1.2}\Large\bf \choosecase{\@title} \par}
@@ -509,10 +530,14 @@ at the
 \signature{Accepted by}{\@chairmanname \\ \@chairmantitle}
 \vfill
 \end{titlepage}}
-
-% this environment should probably be called abstract,
-% but we want people to also be able to get at the more
-% basic abstract environment
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{environment}{abstractpage}
+% This environment should probably be called |abstract|, but we want people to also be able to get at the more basic |abstract| environment.
+%
+%\changes{v0.4}{1990}{Changed from |\unvbox| to |\unvcopy| for use with multiple copies of abstract page (\texttt{krishna})}
+%    \begin{macrocode}
 \def\abstractpage{\cleardoublepage
 \begin{center}{\large{\bf \@title} \\
 by \\
@@ -527,13 +552,10 @@ requirements for the \@degreeword\ of \\
 \par
 \begin{abstract}}
 
-% Changed from \unvbox to \unvcopy for use with multiple copies of abstract
-% page.
-% Krishna Sethuraman (1990)
 \def\endabstractpage{\end{abstract}\noindent
- \unvcopy\@abstractsupervisor \newpage}
-
+  \unvcopy\@abstractsupervisor \newpage}
 %    \end{macrocode}
+%\end{environment}
 %
 %\begin{macro}{savepage}
 % This counter is used to save the page number for the second copy of the abstract.
@@ -542,28 +564,37 @@ requirements for the \@degreeword\ of \\
 %    \end{macrocode}
 %\end{macro}
 %
+%\begin{environment}{titlepage}
+% You can use the |titlepage| environment to do it all yourself if you don't want to use \cmd{\maketitle}. In the |titlepage| environment, the paragraph skip is infinitely stretchable, so if you leave a blank line between lines that you want space between, the space will stretch so that the title page fills up the entire page.
+%
 %    \begin{macrocode}
-% You can use the titlepage environment to do it all yourself if you
-% don't want to use \maketitle.  If the titlepage environment, the
-% paragraph skip is infinitely stretchable, so if you leave a blank line
-% between lines that you want space between, the space will stretch so
-% that the title page fills up the entire page.
 \def\titlepage{\cleardoublepage\centering
   \thispagestyle{empty}
   \parindent 0pt \parskip 10pt plus 1fil minus 1fil
   \def\baselinestretch{1}\@normalsize\vbox to \vsize\bgroup\vbox to 9in\bgroup}
 % The \kern0pt pushes any depth into the height.  Thanks to Richard Stone.
 \def\endtitlepage{\par\kern 0pt\egroup\vss\egroup\newpage}
-
+%    \end{macrocode}
+%\end{environment}
+%
+%\DescribeMacro{\MIT}
+%\DescribeMacro{\Mit}
+% Name of the institute in all caps and title case.
+%    \begin{macrocode}
 \def\MIT{MASSACHUSETTS INSTITUTE OF TECHNOLOGY}
 \def\Mit{Massachusetts Institute of Technology}
-
+%    \end{macrocode}
+%
+%\begin{macro}{\permission}
+% Boilerplate permission text for |vi| class option when copyright rests with the author.
+%    \begin{macrocode}
 \def\permission{\par\noindent{\centering
    The author hereby grants to MIT permission to reproduce and to
    distribute publicly paper and electronic copies of this thesis
    document in whole or in part in any medium now known or hereafter
    created.}\par}
 %    \end{macrocode}
+%\end{macro}
 %
 %\begin{macro}{\signature}
 % Giving \cmd{\signature}\marg{prefix}\marg{person} prints a dotted signature line with the \meta{prefix} at the left end, followed by the name/title given by \meta{person}.
@@ -611,7 +642,6 @@ requirements for the \@degreeword\ of \\
 %\midrule
 %\texttt{pnk} & Paul Natsuo Kishimoto & \email{mail@paul.kishimoto.name} \\
 %? & Kevin Fu & ? \\
-%  & ---|leftblank| option & \\
 %\texttt{jdreed} & Jonathan Reed & ? \\
 %\texttt{boojum} & Laura Baldwin & ? \\
 %\texttt{othomas} & Oliver Thomas & ? \\
