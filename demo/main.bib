@@ -354,3 +354,20 @@ information).
    key = {Volume-2},
    note = "Volume~2 is listed under Knuth \cite{book-full}"
 }
+
+% In order to compile main.tex:
+@misc{gib86,
+   author = {Jane Doe},
+   title = {Example bibliography entry for \texttt{mitthesis.cls}},
+   year = {2018},
+}
+
+@misc{byte:i860, crossref = {gib86}}
+@misc{colwell:vliw, crossref = {gib86}}
+@misc{coutant:precision-compilers, crossref = {gib86}}
+@misc{ellis:bulldog, crossref = {gib86}}
+@misc{magenheimer:precision, crossref = {gib86}}
+@misc{patterson:risc, crossref = {gib86}}
+@misc{pet87, crossref = {gib86}}
+@misc{rad83, crossref = {gib86}}
+@misc{thornton:cdc6600, crossref = {gib86}}

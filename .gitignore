@@ -3,3 +3,12 @@
 .latex-cache
 *.cls
 *.pdf
+demo/*.aux
+demo/*.bbl
+demo/*.blg
+demo/*.fdb_latexmk
+demo/*.fls
+demo/*.lof
+demo/*.log
+demo/*.lot
+demo/*.toc
