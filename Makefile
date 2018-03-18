@@ -2,8 +2,8 @@ INS         = source/mitthesis.ins
 PACKAGE_SRC = $(wildcard source/*.dtx)
 PACKAGE_CLS = $(notdir $(PACKAGE_SRC:%.dtx=%.cls))
 DOC_PDF     = $(notdir $(PACKAGE_SRC:%.dtx=%.pdf))
-DEMO_SRC    = $(wildcard demo/*.tex) demo/main.bib
-DEMO_PDF    = demo/main.pdf
+DEMO_SRC    = $(wildcard demo/demo-*.tex)
+DEMO_PDF    = $(DEMO_SRC:%.tex=%.pdf)
 
 CACHE_DIR   := $(shell pwd)/.latex-cache
 COMPILE_TEX := latexmk -pdf -r $(shell pwd)/.latexmkrc
@@ -41,6 +41,7 @@ $(DOC_PDF): $(PACKAGE_SRC) $(INS) | clean-cache $(CACHE_DIR)
 	@cd $(CACHE_DIR) && $(COMPILE_TEX) ../$(PACKAGE_SRC)
 	@cp $(addprefix $(CACHE_DIR)/,$(DOC_PDF)) .
 
-$(DEMO_PDF): $(DEMO_SRC) $(PACKAGE_CLS)
-	@echo $(DEMO_SRC)
-	@cd demo && $(COMPILE_TEX) main.tex
+demo/demo-%.pdf: demo/demo-%.tex FORCE
+	@cd demo && $(COMPILE_TEX) -silent $(notdir $<)
+
+.PHONY: FORCE
