@@ -4,4 +4,3 @@ This is an experiment to modernize the [‘official’ template](http://web.mit.
 
 ## TODO
 - Migrate `demo/README.*` and `demo/main.bib.info` content to this file.
-- Remove `lgrind` in favour of `listings`.
