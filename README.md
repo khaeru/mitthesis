@@ -13,6 +13,7 @@ Use `make demo` to produce several PDF files in the `demo/` directory using diff
 Uses [latexmk](https://ctan.org/pkg/latexmk), which should be included with your TeX distribution; several common TeX/LaTeX packages; and [GNU make](https://www.gnu.org/software/make/).
 
 ## TODO
+- Documentation is repetitive because it combines comments across many files that repeated the same information, edit down.
 - New `signaturepage` option instead of including `signature.tex`
 - New `doubleabstract` option.
 - Document or discard `propcover.tex`.

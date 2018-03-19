@@ -4,7 +4,7 @@
 %</driver>
 %<*class>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{mitthesis}[2018/03/16 v2.0 LaTeX class for theses at MIT]
+\ProvidesClass{mitthesis}[2018/03/19 v2.0 LaTeX class for theses at MIT]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -48,7 +48,7 @@
 % \fi
 %
 %\def\fileversion{v2.0}
-%\def\filedate{2018/03/16}
+%\def\filedate{2018/03/19}
 %
 %\title{^^A
 %  \textsf{mitthesis} --- \LaTeX\ class for theses at MIT\thanks{^^A
@@ -64,7 +64,7 @@
 %
 %\tableofcontents
 %
-%\changes{v2.0}{2018/03/16}{Repackaged in .dtx (\texttt{pnk})}
+%\changes{v2.0}{2018/03/19}{Repackaged in .dtx (\texttt{pnk})}
 %
 %\StopEventually{}
 %
@@ -72,58 +72,99 @@
 %
 % This class is based on MIT Libraries' official \emph{Specifications for Thesis Preparation}.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} Throughout this document, quotations are taken directly from the specifications to explain defaults and coding choices.
 %
-% However, please verify your thesis' formatting and copyright assignment before submission. If you notice any discrepancies between this class, the accompanying templates, and the official specifications, the latter should take precedence. Please also let ``us'' know by e-mailing \email{thesis@mit.edu}.\footnote{At the moment it's not clear who this address forwards to; the official specifications give \email{mit-theses@mit.edu} as a contact address}
+% However, please verify your thesis' formatting and copyright assignment before submission. If you notice any discrepancies between this class, the accompanying templates, and the official specifications, the latter should take precedence! Please also let `us' know by e-mailing \email{thesis@mit.edu}.\footnote{At the moment it's not clear who this address forwards to; the official specifications give \email{mit-theses@mit.edu} as a contact address}
 %
-%\subsection{Example documents}
+%\subsection{Example files and documents}
 %
-% The directory |demo| included with the class source code contains files named |demo-N.tex|; compile any one of these, or use |make demo| in the top directory of the source code, to produce (an) example PDF(s) using with different class options and other settings.
+% The directory |demo| included with the class source code contains files named |demo-N.tex|; compile any one of these, or use |make demo| in the top-level directory, to produce example PDFs using different class options and other settings:
 %
+%\begin{table}[h]
 %\begin{tabular}{ll}
 %\toprule
 % {\bfseries\ttfamily demo-N.tex} & Features demonstrated \\
 %\midrule
 % 1 & |\documentclass{mitthesis}| (defaults) \\
-% 2 & |draft| option and |drafthead| pagestyle \\
+% 2 & |draft| option and pagestyle \\
 % 3 & |leftblank| and |vi| options \\
-% 4 & |upcase| option and |headings| pagestyle \\
+% 4 & |upcase| and |techreport| options \\
 % 5 & |oneside| and |singlespace| options \\
 %\bottomrule
 %\end{tabular}
+%\end{table}
 %
-% These documents are built using a set of template and example files, also in the |demo| directory. Here is some brief description of these files and their contents:
+% These documents are built using a set of template and example files, also in the |demo| directory. The following sections describe these files and their contents.
 %
-%\paragraph{\ttfamily main.tex}
-% A template 'master' file for the thesis. The command \cmd{\include} is used to include other files.
+%\subsection{The main document (\texttt{main.tex})}
 %
-% To include appendices, use a single \cmd{\appendix} command followed by \cmd{\include} for each appendix.
+% A template `master' file for the thesis. The \cmd{\documentclass} command is the first command in the document, and indicates you will use this class. To use the default options:
+%\begin{verbatim}
+%\documentclass{mitthesis}
+%\end{verbatim}
+% \ldots or, for compact drafts:
+%\begin{verbatim}
+%\documentclass[11pt,draft,singlespacing]{mitthesis}
+%\end{verbatim}
+% \ldots or, for Tech Reports:
+%\begin{verbatim}
+%\documentclass[techreport]{mitthesis}
+%\end{verbatim}
+% All options are documented in section \ref{sub:classoptions}.
 %
-% In order to produce a bibliography, the file uses the |biblatex| package. The lines:
+% The command \cmd{\include} is used to include other files into the master file. To include appendices, use a single \cmd{\appendix} command followed by \cmd{\include} for each appendix.
+%
+% \paragraph{Bibliography.} In order to produce a bibliography, the file uses the |biblatex| package. These lines load the package and tell it where to find bibliography entries for citations:
 %\begin{verbatim}
 %\usepackage{biblatex}
 %\addbibresource{main.bib}
 %\end{verbatim}
-% \ldots load the package and tell it where to find bibliography entries for citations. The line:
+% This line causes the actual bibliography to be printed.
 %\begin{verbatim}
 %\printbibliography
 %\end{verbatim}
-% \ldots causes the actual bibliography to be printed.
 %
 % |biblatex| is a modern, powerful package with many options for formatting citations and the bibliography itself, and for advanced usages like per-chapter bibliographies. For more information, see \href{http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf}{the |biblatex| documentation}.\footnote{Warning---that's a 300+ page PDF! Did we say `many options'?} You may instead wish to use older bibliography packages such as |natbib| or |cite|. For information on all of these, including some comparison, see the \href{https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management}{``Bibliography Management''} and \href{https://en.wikibooks.org/wiki/LaTeX/More_Bibliographies}{``More Bibliographies''} chapters of the \emph{\LaTeX\ Wikibook}.
 %
-%\paragraph{\ttfamily chap1.tex}
-% An example first chapter.  To get started, you may just want to replace the text and commands in that file as needed. In general though, for each new chapter you want to do the following:
+%\subsection{Title page, abstract \& acknowledgments (\texttt{cover.tex})}
+%
+% The titlepage is prepared by giving the following commands. All are required, except for \cmd{\prevdegrees}, and then can be given in any order.
+%\begin{itemize}
+%  \item \cmd{\title}---the full title of your thesis
+%  \item \cmd{\author}---your full name.
+%  \item \cmd{\prevdegrees}, \cmd{\department}, \cmd{\degree}, \cmd{\degreemonth}, \cmd{\degreeyear}, and \cmd{\thesisdate}---documented in section \ref{sub:titlecommands}.
+%  \item \cmd{\supervisor} one or more times, and \cmd{\chairman}, only once---documented in section \ref{sub:supervisors}.
+%\end{itemize}
+% Using this information, \cmd{\maketitle} generates the title page.
+%
+% If you need something special and can't use the standard format, you can specify the exact text of the title page yourself. Put it in a |titlepage| environment (see below), leaving blank lines where you want vertical space. The spaces will be adjusted to fill the entire page. The dotted lines for the signatures are made with \cmd{\signature}.
+%
+%\paragraph{The abstract.}
+% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself.
+%\begin{verbatim}
+%\begin{abstractpage}
+%  Abstract goes here.
+%\end{abstractpage}
+%\end{verbatim}
+%
+% If you need more control over the format of the page, you can use the |abstract| environment, which puts the word ``Abstract'' at the beginning and single spaces its text.
+%
+%\subsection{Chapters (\texttt{chap1.tex})}
+%
+% An example first chapter.  To get started, you may just want to replace the text and commands in that file as needed. In general, for each new chapter you want to do the following:
 %
 %\begin{itemize}
-%  \item Make sure the name has the extension |.tex|. Otherwise, you can call it anything you want. For ease of use, all the examples use chap1, chap2, etc.
+%  \item Make sure the file name has the extension |.tex|. Otherwise, you can call it anything you want. For ease of use, all the examples use chap1, chap2, etc.
 %  \item Add a line to |main.tex| that reads \cmd{\include}\marg{chapter file}. The \meta{chapter file} should not include the |.tex| extension, because \LaTeX\ assumes that is there.
 %  \item The first line of each chapter should be: \cmd{\chapter}\marg{chapter title}. Use the commands \cmd{\section}\marg{section heading} and \cmd{\subsection}\marg{subsection heading} to further organize the chapter.
 %\end{itemize}
 %
 % In chapters and appendices, commands like \cmd{\cite}\marg{citation key} are used to refer to bibliography entries from |main.bib|.
 %
-%\paragraph{\ttfamily appa.tex} An example first appendix. In a file that is \cmd{\include}'d after the command \cmd{appendix}, the appendix title is still given \cmd{\chapter}\marg{appendix title}.\footnote{To remember this, think of each appendix as a ``chapter-level division'' of your thesis document.}
+%\subsection{Appendices (\texttt{appa.tex})}
 %
-%\paragraph{\ttfamily main.bib}
+% An example first appendix. In a file that is \cmd{\include}'d after the command \cmd{appendix}, the appendix title is still given \cmd{\chapter}\marg{appendix title}.\footnote{To remember this, think of each appendix as a ``chapter-level division'' of your thesis document.}
+%
+%\subsection{Bibliography database (\texttt{main.bib})}
+%
 % This is the `database' of bibliography entries. When you cite a reference, you need to use the key you declare in |main.bib| for the entry. No one ever sees the keys, but you'll want to use something you will easily remember. For instance, if you had an entry that began:
 %\begin{verbatim}
 %@article{geer-1999,
@@ -137,74 +178,7 @@
 %
 % You can also force your bibliography to include references that are never cited in your thesis. If you need to do this, add the entry or entries to |main.bib| and include \cmd{\nocite}\marg{keys} before \cmd{\printbibliography} in |main.tex|. \meta{keys} can be one or more keys, separated by commas, or an asterisk (|*|) to include \emph{all} entries from |main.bib|. This should be done for every entry which is not explicitly cited.
 %
-%\subsection{Preamble}
-%
-% To use this style, say something like (for dull, boring thesis format):
-%\begin{verbatim}
-%\documentclass{mitthesis}
-%\end{verbatim}
-%
-% \ldots or, for compact drafts:
-%\begin{verbatim}
-%\documentclass[11pt,singlespace,draft]{mitthesis}
-%\pagestyle{drafthead}
-%\end{verbatim}
-%
-% \ldots or, for Tech Reports:
-%\begin{verbatim}
-%\documentclass{mitthesis}
-%\pagestyle{headings}
-%\end{verbatim}
-%
 % \ldots or some other combination.
-%
-%\subsection{The title page}
-% Parameters to initialize for boilerplate page include the following:
-%\begin{verbatim}
-%\title{Mixed Circular Cylindrical Shells}
-%\author{J. Casey Salas}
-%\prevdegrees{B.S., University of California (1978) \\
-%  S.M., Massachusetts Institute of Technology (1981)}
-%\department{Department of Electrical Engineering and Computer Science}
-%\degree{Doctor of Philosophy}
-%\end{verbatim}
-%
-% If the thesis is for two degrees simultaneously, list them both separated by |\and| like this:
-%\begin{verbatim}
-%\degree{Doctor of Philosophy \and Master of Science}
-%\degreemonth{February}
-%\degreeyear{1987}
-%\thesisdate{December 10, 1986}
-%\end{verbatim}
-%
-% If the thesis is copyright by the Institute, leave this line out and the standard copyright line will be used instead.
-%\begin{verbatim}
-%\copyrightnotice{J. Casey Salas, 1986}
-%\end{verbatim}
-%
-% If there is more than one supervisor, use the |\supervisor| command once for each.
-%\begin{verbatim}
-%\supervisor{John D. Galli}{Director, Sound Instrument Laboratory}
-%\end{verbatim}
-%
-% This is the \emph{department} committee chairman, not the \emph{thesis} committee chairman:
-%\begin{verbatim}
-%\chairman{Arthur C. Smith}%
-%  {Chairman, Departmental Committee on Graduate Students}
-%\end{verbatim}
-%
-% Make the titlepage based on the above information. If you need something special and can't use the standard form, you can specify the exact text of the titlepage yourself. Put it in a |titlepage| environment and leave blank lines where you want vertical space. The spaces will be adjusted to fill the entire page. The dotted lines for the signatures are made with the \cmd{\signature} command.
-%
-%\subsection{The abstract}
-%
-% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself.
-%\begin{verbatim}
-%\begin{abstractpage}
-%  Abstract goes here.
-%\end{abstractpage}
-%\end{verbatim}
-%
-% If you need more control over the format of the page, you can use the |abstract| environment, which puts the word "Abstract" at the beginning and single spaces its text.
 %
 % \section{Implementation}
 %
@@ -233,27 +207,19 @@
 %\changes{v0.2}{1987}{Pagestyle and header generation (Peter Nuth)}
 %\changes{v0.1}{1987}{Original version with title \& abstract page (Stephen Gildea)}
 %
-% Remaining header comments from the original |.cls| file:
-%
-%    \begin{macrocode}
-% Look in this directory for example file mitthesis.doc
-% Also for propcover.tex - Boilerplate for PHD proposal.
-%
-% New options:
-%
-% Option `draft':
-%   Puts `overfull' boxes at the end of lines that are too long.
-%
-% Pagestyle `drafthead':
-%   Puts the date and the label ``*DRAFT*'' in the footer.
-%
-% Also added ``All Rights Reserved'' to default copyright notice.
-%    \end{macrocode}
-%
 %\subsection{Class options}
+%\label{sub:classoptions}
+%
+% The following class options are defaults:
+%\begin{itemize}
+%  \item |12pt|
+%  \item |doublespacing|
+%  \item |letterpaper|
+%  \item |twoside|
+%\end{itemize}
 %
 %\begin{macro}{doublespacing}
-% Use double-spaced text by default. The options |singlespacing|, |onehalfspacing| and |doublespacing| are passed directly through to the |setspace| package. To get single spacing in an area, use the |singlespace| environment.
+% The options |singlespacing|, |onehalfspacing| and |doublespacing| are passed directly through to the |setspace| package. To get single spacing in an area, use the |singlespace| environment.
 %\begin{quote}\itshape
 %``MARGINS AND SPACING
 %
@@ -270,7 +236,8 @@
 %\end{macro}
 %
 %\begin{macro}{vi}
-% For MIT course VI or VIII theses. Will copyright the thesis to you while giving MIT permission to copy and distribute it.
+% For MIT Course VI or VIII theses. This command changes the copyright notice so that copyright rests with you, the author, and adds a notice giving MIT permission to copy and distribute it.
+%
 %    \begin{macrocode}
 \newif\if@vithesis\@vithesisfalse
 \DeclareOption{vi}{
@@ -280,18 +247,18 @@
 %\end{macro}
 %
 %\begin{macro}{upcase}
-% Put much of the cover page in uppercase, as per the example on page 17 of the ``Specifications for Thesis Preparation.''
+% Put much of the cover page in uppercase, as per the example on page 17 of the \emph{Specifications for Thesis Preparation}.
+%
 %    \begin{macrocode}
 \DeclareOption{upcase}{%
   \typeout{Uppercase cover page.}
-  \gdef\choosecase#1{\uppercase\expandafter{#1}}
-}
+  \gdef\choosecase#1{\uppercase\expandafter{#1}}}
 \def\choosecase#1{#1}
 %    \end{macrocode}
 %\end{macro}
 %
 %\begin{macro}{leftblank}
-% Print ``This page intentionally left blank.'' on left pages. Has no effect if |oneside|.
+% Print ``THIS PAGE INTENTIONALLY LEFT BLANK'' on left pages. Has no effect in a |oneside| thesis.
 %
 %\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{added (Kevin Fu via \texttt{boojum})}
 %    \begin{macrocode}
@@ -303,12 +270,10 @@
 %\end{macro}
 %
 %\begin{macro}{12pt}
-% Set the default font size; give |11pt| to override.
+% Use a 12-point normal font size. Give |11pt| for smaller body text.
 %
 %\begin{quote}\itshape
-%``TYPEFACE AND SIZE
-%
-%For the main body of the text, including appendices and front matter, font size should be at least 11-point and should not be script or italic.''
+%``TYPEFACE AND SIZE---For the main body of the text, including appendices and front matter, font size should be at least 11-point and should not be script or italic.''
 %\end{quote}
 %
 % Because of this, giving |10pt| produces an error message.
@@ -326,32 +291,29 @@
 %\end{macro}
 %
 %\begin{macro}{twoside}
-% Set the document to be double-sided by default; give |oneside| to override.
+% Set the document to be double-sided. Give |oneside| to for a single-sided document.
 %\begin{quote}\itshape
-%``PAGINATION
-%
-%\ldots
-%
-%Theses should be prepared double-sided whenever possible.''
+%``PAGINATION---Theses should be prepared double-sided whenever possible.''
 %\end{quote}
 %
 %    \begin{macrocode}
-\DeclareOption{oneside}{\PassOptionsToClass{\CurrentOption}{report}}
+\DeclareOption{oneside}{
+  \ClassWarning{mitthesis}{MIT Libraries states: "Theses should be prepared
+                           double-sided whenever possible."}
+  \PassOptionsToClass{\CurrentOption}{report}}
 \DeclareOption{twoside}{\PassOptionsToClass{\CurrentOption}{report}}
 \ExecuteOptions{twoside}
 %    \end{macrocode}
 %\end{macro}
 %
 %\begin{macro}{letterpaper}
-% Invalidate other options offered by |report|.
+% This is the default paper size.
 %
 %\begin{quote}\itshape
-%``PAPER
-%
-%\ldots
-%
-% The standard size for theses is 8 1/2 by 11 inches.''
+%``PAPER---The standard size for theses is 8 1/2 by 11 inches.''
 %\end{quote}
+%
+% We invalidate the other options given by |report|, just so you're not tempted to use another size.
 %
 %    \begin{macrocode}
 \DeclareOption{a4paper}{
@@ -376,8 +338,14 @@
 %
 %\DescribeMacro{draft}
 %\DescribeMacro{techreport}
-% |draft| and |techreport| modes mostly control which page style (headers and footers) are used.
+% These options control which page style (headers and footers) are used.
+% Both add a header containing the chapter or section number and title `inside' (on the left side of a right page, and vice versa; or on the right in |oneside| mode) and the page number `outside' (on left side of a left page, and vice versa; or on the left in |oneside| mode).
 %
+% Only |draft| adds a footer, containing the text ``***DRAFT***'' (the \cmd{\draftmark}) mark outside and the current (not thesis submission) date inside. In other modes, the page number is displayed centered in the bottom margin (see section \ref{sub:margins}).
+%
+% Additionally, in |draft| mode, bars are printed in the right margin to flag overfull lines.
+%
+% See the definitions of \cmd{\ps@draft} and \cmd{\ps@headings}, respectively.
 %    \begin{macrocode}
 \newif\if@includefoot\@includefootfalse
 \newif\if@includehead\@includeheadfalse
@@ -420,9 +388,14 @@ process all files:}
 \RequirePackage{setspace}
 %    \end{macrocode}
 %
-%\subsection{Margins and formatting parameters}
-%\paragraph{Margins.}
-% We want a one inch top margin assuming no header line, so push header into the one inch margin. Draft mode brings the header back down.
+%\subsection{Margins}
+%\label{sub:margins}
+%
+%\begin{quote}\itshape
+% ``MARGINS AND SPACING---Top, bottom, and both side margins must be at least an inch wide (1") to allow for binding and trimming. All information (text headings, notes, and illustrations), excluding page numbers, must be within the text area.''
+%\end{quote}
+%
+% If the user gives |draft| or |techreport|, make sure the header and footer (if any) are included in this area.
 %
 %    \begin{macrocode}
 \RequirePackage{geometry}
@@ -447,13 +420,12 @@ process all files:}
 % Text to be included in the footer when |draft| is given.
 %
 %    \begin{macrocode}
-\newcommand{\draftmark}{**DRAFT**}
+\def\draftmark{**DRAFT**}
 %    \end{macrocode}
 %\end{macro}
 %
 %\begin{macro}{\ps@draft}
-% Header and footer format for draft of thesis. The header contains the chapter or section and the page number. The footer contains the draft mark (outside, \emph{ie.} right side of odd, or right pages; or all pages in |oneside| mode) and the date (inside, or left).
-%
+% Define header and footer format for a |draft| thesis.
 %
 %\changes{v1.14}{2009/07/27 14:23:50 (as "1.8")}{Added changing draft mark (\texttt{boojum})}
 %
@@ -477,7 +449,7 @@ process all files:}
 %\end{macro}
 %
 %\begin{macro}{\ps@headings}
-% Redefine these formats that were defined in |report.sty|. Definition of 'headings' page style. Note the use of |##1| for parameter of |\def\chaptermark| inside the |\def\ps@headings|.
+% Redefine these formats that were defined in |report.sty|. Note the use of |##1| for parameter of |\def\chaptermark| inside the |\def\ps@headings|.
 %
 %    \begin{macrocode}
 \def\ps@headings{
@@ -519,13 +491,17 @@ process all files:}
   \@afterindentfalse  % Suppresses indent in first paragraph.  Change
   \secdef\@chapter\@schapter}  % to \@afterindenttrue to have indent.
 \fi
-% If using the report style, use - instead of . in the figure number.
+%    \end{macrocode}
+%
+% Format figure numbers like ``\meta{chapter number}-\meta{figure number}'', instead of with a period.
+%
+%    \begin{macrocode}
 \@ifundefined{thechapter}{}{\def\thefigure{\thechapter-\arabic{figure}}}
 %    \end{macrocode}
 %\end{macro}
 %
-%\subsection{The title page}
-% Define all the pieces that go on the title page and the abstract. \cmd{\title} and \cmd{\author} already exist.
+%\subsection{Title page elements}
+%\label{sub:titlecommands}
 %
 %\begin{macro}{\prevdegrees}
 % Use this command to list your previous degrees on the cover page:
@@ -623,6 +599,8 @@ reserved.\par\permission}}
 %\end{macro}
 %
 %\subsection{People who will sign the thesis}
+%\label{sub:supervisors}
+%
 % These commands have similar syntax:
 %\begin{itemize}
 %  \item \cmd{\supervisor}\marg{name}\marg{title}
@@ -657,9 +635,7 @@ reserved.\par\permission}}
 %\end{macro}
 %
 %\begin{macro}{\maketitle}
-% Make the titlepage based on the above information. If you need something special and can't use the standard format, you can specify the exact text of the title page yourself. Put it in a |titlepage| environment (see below), leaving blank lines where you want vertical space. The spaces will be adjusted to fill the entire page. The dotted lines for the signatures are made with \cmd{\signature}.
-%
-% If the |upcase| class option was given, \cmd{\choosecase} is defined to change the (expanded) argument to uppercase; otherwise, it is a dummy.
+% Make the titlepage based on the above information. If the |upcase| class option was given, \cmd{\choosecase} is defined to change the (expanded) argument to uppercase; otherwise, it is a dummy.
 %
 %    \begin{macrocode}
 \def\maketitle{\begin{titlepage}
@@ -768,6 +744,7 @@ requirements for the \@degreeword\ of \\
 %    \end{macrocode}
 %\end{environment}
 %
+%\clearpage
 %\PrintChanges
 %
 % For version 2.0, some fairly major changes were made. These include:
