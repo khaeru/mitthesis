@@ -16,6 +16,8 @@ doc: $(DOC_PDF)
 
 demo: cls $(DEMO_PDF)
 
+interactive-demo: cls demo/interactive-demo.pdf
+
 clean: clean-cache clean-cls clean-doc
 
 clean-cache:
@@ -41,7 +43,7 @@ $(DOC_PDF): $(PACKAGE_SRC) $(INS) | clean-cache $(CACHE_DIR)
 	@cd $(CACHE_DIR) && $(COMPILE_TEX) ../$(PACKAGE_SRC)
 	@cp $(addprefix $(CACHE_DIR)/,$(DOC_PDF)) .
 
-demo/demo-%.pdf: demo/demo-%.tex FORCE
+demo/%.pdf: demo/%.tex FORCE
 	@cd demo && $(COMPILE_TEX) -silent $(notdir $<)
 
 .PHONY: FORCE

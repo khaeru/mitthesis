@@ -319,7 +319,8 @@
 %
 %    \begin{macrocode}
 \DeclareOption{10pt}{
-  \ClassError{mitthesis}{MIT Libraries states: "font size should be at least 11-point"}}
+  \ClassError{mitthesis}{MIT Libraries states: "font size should be at least
+                         11-point"}}
 \DeclareOption{11pt}{\PassOptionsToClass{\CurrentOption}{report}}
 \DeclareOption{12pt}{\PassOptionsToClass{\CurrentOption}{report}}
 \ExecuteOptions{12pt}
@@ -351,20 +352,25 @@
 %
 %\ldots
 %
-% The standard size for theses is 8½ by 11 inches.''
+% The standard size for theses is 8 1/2 by 11 inches.''
 %\end{quote}
 %
 %    \begin{macrocode}
 \DeclareOption{a4paper}{
-  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is 8 1/2 by 11 inches."}}
+  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is
+                        8 1/2 by 11 inches."}}
 \DeclareOption{a5paper}{
-  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is 8 1/2 by 11 inches."}}
+  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is
+                        8 1/2 by 11 inches."}}
 \DeclareOption{b5paper}{
-  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is 8 1/2 by 11 inches."}}
+  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is
+                        8 1/2 by 11 inches."}}
 \DeclareOption{legalpaper}{
-  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is 8 1/2 by 11 inches."}}
+  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is
+                        8 1/2 by 11 inches."}}
 \DeclareOption{executivepaper}{
-  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is 8 1/2 by 11 inches."}}
+  \ClassError{mittheis}{MIT Libraries states: "The standard size for theses is
+                        8 1/2 by 11 inches."}}
 \DeclareOption{letterpaper}{\PassOptionsToClass{\CurrentOption}{report}}
 \ExecuteOptions{letterpaper}
 %    \end{macrocode}
@@ -385,6 +391,25 @@
 \DeclareOption{techreport}{
   \@includeheadtrue
   \AtBeginDocument{\pagestyle{headings}}}
+%    \end{macrocode}
+%
+%\begin{macro}{interactive}
+% This bit allows you to either specify only the files which you wish to process, or `all' to process all files which you \cmd{\include}.\footnote{Note that since proper compilation of a document can require multiple calls to |(pdf)latex|, |bibtex|, |makeindex| and other tools, one must re-enter the list of files three or more times. A simpler expedient is to put a temporary \cmd{\includeonly}\marg{files} line in the preamble of |main.tex|.}
+%
+%    \begin{macrocode}
+% Krishna Sethuraman (1990).
+\DeclareOption{interactive}{
+\AtBeginDocument{
+\scrollmode
+\typein[\files]{Enter file names to process, (chap1,chap2 ...), or `all' to %
+process all files:}
+\def\all{all}
+\ifx\files\all
+\typeout{Including all files.}
+\else
+\typeout{Including only \files.}
+\includeonly{\files}
+\fi}}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -448,7 +473,9 @@
       \@chapapp\ \thechapter. \ \fi ##1}}}
   \fi}
 %    \end{macrocode}
+%\end{macro}
 %
+%\begin{macro}{\ps@headings}
 % Redefine these formats that were defined in |report.sty|. Definition of 'headings' page style. Note the use of |##1| for parameter of |\def\chaptermark| inside the |\def\ps@headings|.
 %
 %    \begin{macrocode}
@@ -468,9 +495,10 @@
       \@chapapp\ \thechapter. \ \fi ##1}}}
   \fi}
 %    \end{macrocode}
+%\end{macro}
 %
 %\begin{macro}{\chapter}
-% Redefine '/chapter' to always start on an odd page. Should make no difference in |oneside| mode.
+% Redefine \cmd{\chapter} to always start on an odd page. Should make no difference in |oneside| mode.
 %
 %    \begin{macrocode}
 \if@leftblank
