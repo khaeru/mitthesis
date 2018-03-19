@@ -243,11 +243,6 @@
 %
 % New options:
 %
-% Option `twoside':
-%   Good for producing Tech Reports.
-%   The default is single-sided printing, which is what M.I.T. wants on the
-%   thesis document itself.
-%
 % Option `draft':
 %   Puts `overfull' boxes at the end of lines that are too long.
 %
@@ -259,19 +254,20 @@
 %
 %\subsection{Class options}
 %
-%\begin{macro}{singlespace}
-% Single spacing is good for drafts. Double-spaced theses (\DescribeMacro{doublespace}) are the default. That is what M.I.T. asks for in the formal specifications.
+%\begin{macro}{doublespacing}
+% Use double-spaced text by default. The options |singlespacing|, |onehalfspacing| and |doublespacing| are passed directly through to the |setspace| package. To get single spacing in an area, use the |singlespace| environment.
+%\begin{quote}\itshape
+%``MARGINS AND SPACING
 %
-% Note that MIT does not REQUIRE all theses to be double-spaced anymore. Someone in the library system said that it's OK to be single-spaced. (Regardless of what the specs. say...)
+%\ldots \\
+%The text of the thesis may be single- double- or one-and-a-half-spaced. The abstract, biography, notes, bibliography, and acknowledgment should be single-spaced.''
+%\end{quote}
 %
-% To get single spacing in an area, use the |singlespace| environment.
 %    \begin{macrocode}
-\def\mystretch{1.5}  % Double spacing hack
-\DeclareOption{doublespace}{}  % This is default
-% So we do not read this style twice
-\DeclareOption{singlespace}{  % If he explicitly wants single spacing
-  \typeout{Single spaced}
-  \def\mystretch{1}}
+\DeclareOption{singlespacing}{\PassOptionsToPackage{\CurrentOption}{setspace}}
+\DeclareOption{onehalfspacing}{\PassOptionsToPackage{\CurrentOption}{setspace}}
+\DeclareOption{doublespacing}{\PassOptionsToPackage{\CurrentOption}{setspace}}
+\ExecuteOptions{doublespacing}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -308,7 +304,7 @@
 %\end{macro}
 %
 %\begin{macro}{12pt}
-% Set the default font size; give |11pt| or |10pt| to override. However note:
+% Set the default font size; give |11pt| to override.
 %
 %\begin{quote}\itshape
 %``TYPEFACE AND SIZE
@@ -316,25 +312,44 @@
 %For the main body of the text, including appendices and front matter, font size should be at least 11-point and should not be script or italic.''
 %\end{quote}
 %
+% Because of this, giving |10pt| produces an error message.
+%
 %\changes{v2.0}{2018}{make default (\texttt{pnk})}
 %
 %    \begin{macrocode}
+\DeclareOption{10pt}{
+  \ClassError{mitthesis}{MIT Libraries states: "font size should be at least 11-point"}
+}
+\DeclareOption{11pt}{\PassOptionsToClass{\CurrentOption}{report}}
+\DeclareOption{12pt}{\PassOptionsToClass{\CurrentOption}{report}}
 \ExecuteOptions{12pt}
 %    \end{macrocode}
 %\end{macro}
-% Pass remaining options to the |report| document class.
+%
+%\begin{macro}{twoside}
+% Set the document to be double-sided by default; give |oneside| to override.
+%\begin{quote}\itshape
+%``PAGINATION
+%
+%\ldots
+%
+%Theses should be prepared double-sided whenever possible.''
+%\end{quote}
 %
 %    \begin{macrocode}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
-\ProcessOptions
-\LoadClass{report}
+\DeclareOption{oneside}{\PassOptionsToClass{\CurrentOption}{report}}
+\DeclareOption{twoside}{\PassOptionsToClass{\CurrentOption}{report}}
+\ExecuteOptions{twoside}
 %    \end{macrocode}
+%\end{macro}
 %
-% If the user wants single spacing, set baselinestretch=1.
+% Pass any remaining options to the |report| document class.
 %
 %    \begin{macrocode}
-\usepackage{setspace}
-\def\baselinestretch{\mystretch}  % Double spacing hack
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+\LoadClass{report}
+\RequirePackage{setspace}
 %    \end{macrocode}
 %
 %\subsection{Margins and formatting parameters}
@@ -697,6 +712,7 @@ requirements for the \@degreeword\ of \\
 %
 % For version 2.0, some fairly major changes were made. These include:
 %\begin{itemize}
+%\item |lgrind.sty| deleted. Authors wanting to include source code listings in their theses should consider the |listings| or |minted| packages (as suggested by the \href{https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings}{``Source Code Listings'' chapter} of the \emph{\LaTeX\ Wikibook}), or releasing their code in a citable, reusable way using a service such as \href{https://zenodo.org}{Zenodo}.
 %\end{itemize}
 %
 %\subsection{Notes}

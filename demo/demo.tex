@@ -2,15 +2,14 @@
 
 \RequirePackage{xstring}
 
-\IfEndWith{\jobname}{1}{\documentclass[twoside]{mitthesis}}{}
+\IfEndWith{\jobname}{1}{\documentclass{mitthesis}}{}
 \IfEndWith{\jobname}{2}{%
   \AtBeginDocument{\pagestyle{drafthead}}%
-  \documentclass[draft,twoside]{mitthesis}}{}
-\IfEndWith{\jobname}{3}{\documentclass[leftblank,twoside,vi]{mitthesis}}{}
+  \documentclass[draft]{mitthesis}}{}
+\IfEndWith{\jobname}{3}{\documentclass[leftblank,vi]{mitthesis}}{}
 \IfEndWith{\jobname}{4}{%
   \AtBeginDocument{\pagestyle{headings}}%
-  \documentclass[twoside,upcase]{mitthesis}}{}
-\IfEndWith{\jobname}{5}{%
-  \documentclass[oneside,singlespace,twoside]{mitthesis}}{}
+  \documentclass[upcase]{mitthesis}}{}
+\IfEndWith{\jobname}{5}{\documentclass[oneside,singlespacing]{mitthesis}}{}
 
 \input{main}
