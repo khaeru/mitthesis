@@ -3,13 +3,9 @@
 \RequirePackage{xstring}
 
 \IfEndWith{\jobname}{1}{\documentclass{mitthesis}}{}
-\IfEndWith{\jobname}{2}{%
-  \AtBeginDocument{\pagestyle{drafthead}}%
-  \documentclass[draft]{mitthesis}}{}
+\IfEndWith{\jobname}{2}{\documentclass[draft]{mitthesis}}{}
 \IfEndWith{\jobname}{3}{\documentclass[leftblank,vi]{mitthesis}}{}
-\IfEndWith{\jobname}{4}{%
-  \AtBeginDocument{\pagestyle{headings}}%
-  \documentclass[upcase]{mitthesis}}{}
+\IfEndWith{\jobname}{4}{\documentclass[upcase,techreport]{mitthesis}}{}
 \IfEndWith{\jobname}{5}{\documentclass[oneside,singlespacing]{mitthesis}}{}
 
 \input{main}
