@@ -274,9 +274,10 @@
 %\begin{macro}{vi}
 % For MIT course VI or VIII theses. Will copyright the thesis to you while giving MIT permission to copy and distribute it.
 %    \begin{macrocode}
-\newcount\vithesis
-\DeclareOption{vi}{\typeout{Course VI/VIII thesis style.}\advance\vithesis by1}
-\vithesis=0
+\newif\if@vithesis\@vithesisfalse
+\DeclareOption{vi}{
+  \typeout{Course VI/VIII thesis style.}
+  \@vithesistrue}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -546,12 +547,12 @@ reserved.\par\permission}}
 % |vi| class option: Specifying this option automatically copyrights the thesis to the author and gives MIT permission to copy and distribute the document. If you want, you can still specify \cmd{\copyrightnotice}\marg{stuff} to copyright to someone else, or \cmd{\copyrightnoticetext}\marg{stuff} to specify the exact text of the copyright notice.
 %
 %    \begin{macrocode}
-\ifodd\vithesis \copyrightnoticetext{\copyright\ \@author,
+\if@vithesis
+\copyrightnoticetext{\copyright\ \@author,
 \uppercase\expandafter{\romannumeral\@degreeyear}.  All rights reserved.\par\permission}
-%% or just
-%%\@degreeyear}}
 \typeout{Copyright given to author, permission to copy/distribute given to MIT.}
-\else \typeout{Thesis document copyright MIT unless otherwise (manually) specified}
+\else
+\typeout{Thesis document copyright MIT unless otherwise (manually) specified.}
 \fi
 %    \end{macrocode}
 %
