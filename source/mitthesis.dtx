@@ -16,8 +16,8 @@
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
-% \end, \gdef, \global, \hbox, \ifnum don't work in this command
-\DoNotIndex{\\,\advance,\arabic,\addtolength,\baselineskip,\baselinestretch,\begin,\bf,\ngroup,\centering,\cleardoublepage,\clearpage,\CurrentOption,\DeclareOption,\def,\dotfill,\doublespace,\egroup,\else,\expandafter,\fi,\hfil,\input,\Large,\large,\let,\LoadClass,\newbox,\newcommand,\newcount,\newcounter,\newif,\newpage,\noindent,\par,\PassOptionsToClass,\ProcessOptions,\raggedleft,\renewcommand,\rm,\sc,\setlength,\sl,\small,\subsection,\thechapter,\thepage,\thesection,\today,\typeout,\uppercase,\usepackage,\vbox,\vfill,\vskip}
+% \hbox, \ifnum don't work in this command
+\DoNotIndex{\\,\@afterindentfalse,\@afterindenttrue,\advance,\arabic,\addtolength,\baselineskip,\baselinestretch,\begin,\bf,\ngroup,\centering,\ClassError,\cleardoublepage,\clearpage,\CurrentOption,\DeclareOption,\def,\dotfill,\doublespace,\egroup,\else,\end,\expandafter,\fi,\gdef,\geometry,\hfil,\input,\Large,\large,\let,\LoadClass,\newbox,\newcommand,\newcount,\newcounter,\newif,\newpage,\noindent,\par,\PassOptionsToClass,\ProcessOptions,\raggedleft,\renewcommand,\rm,\sc,\setlength,\sl,\small,\subsection,\thechapter,\thepage,\thesection,\today,\typeout,\uppercase,\usepackage,\vbox,\vfill,\vskip,\z@}
 % https://tex.stackexchange.com/a/74113
 \makeatletter
 \@ifdefinable{\org@changes@}{%
@@ -47,9 +47,8 @@
 %</driver>
 % \fi
 %
-%\CheckSum{0}
-%
-%\GetFileInfo{\jobname.dtx}
+%\def\fileversion{v2.0}
+%\def\filedate{2018/03/16}
 %
 %\title{^^A
 %  \textsf{mitthesis} --- \LaTeX\ class for theses at MIT\thanks{^^A
