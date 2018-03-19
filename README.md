@@ -13,7 +13,6 @@ Use `make demo` to produce several PDF files in the `demo/` directory using diff
 Uses [latexmk](https://ctan.org/pkg/latexmk), which should be included with your TeX distribution; several common TeX/LaTeX packages; and [GNU make](https://www.gnu.org/software/make/).
 
 ## TODO
-- Move `cover.tex` inline documentation to `mitthesis.dtx`.
 - Debug version and date not displayed correctly in generated documentation.
 - New `signaturepage` option instead of including `signature.tex`
 - New `doubleabstract` option.
