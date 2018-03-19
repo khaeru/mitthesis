@@ -14,7 +14,7 @@ cls: $(PACKAGE_CLS)
 
 doc: $(DOC_PDF)
 
-demo: $(DEMO_PDF)
+demo: cls $(DEMO_PDF)
 
 clean: clean-cache clean-cls clean-doc
 
