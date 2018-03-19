@@ -1,4 +1,6 @@
 % Template for a main thesis document
+%
+% See mitthesis.pdf for a complete description of this file and how it works.
 
 % This line is commented so this file can be used by demo.tex to generate the
 % example files. If you are using this for your own thesis, uncomment it, and
@@ -11,7 +13,8 @@
 \usepackage[T1]{fontenc}
 \pagestyle{plain}
 
-\usepackage{natbib}
+\usepackage{biblatex}
+\addbibresource{main.bib}
 
 %% This bit allows you to either specify only the files which you wish to
 %% process, or `all' to process all files which you \include.
@@ -32,8 +35,11 @@
 \include{contents}
 \include{chap1}
 \include{chap2}
+
 \appendix
 \include{appa}
 \include{appb}
-\include{biblio}
+
+\printbibliography
+
 \end{document}

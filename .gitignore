@@ -5,10 +5,12 @@
 *.pdf
 demo/*.aux
 demo/*.bbl
+demo/*.bcf
 demo/*.blg
 demo/*.fdb_latexmk
 demo/*.fls
 demo/*.lof
 demo/*.log
 demo/*.lot
+demo/*.run.xml
 demo/*.toc

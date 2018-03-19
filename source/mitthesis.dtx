@@ -71,19 +71,19 @@
 %
 %\section{Usage}
 %
-% This class is based on MIT Libraries' official \emph{Specifications for Thesis Preparation}.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} Throughout the document, quotations are taken directly from the specifications to explain defaults and coding choices.
+% This class is based on MIT Libraries' official \emph{Specifications for Thesis Preparation}.''\footnote{\url{https://libraries.mit.edu/archives/thesis-specs/}} Throughout this document, quotations are taken directly from the specifications to explain defaults and coding choices.
 %
-% However, Please verify your thesis' formatting and copyright assignment before submission. If you notice any discrepancies between this class, the accompanying templates, and the official specifications, the latter should take precedence. Please also let ``us'' know by e-mailing \email{thesis@mit.edu}.\footnote{At the moment it's not clear who this address forwards to; the official specifications give \email{mit-theses@mit.edu} as a contact address}
+% However, please verify your thesis' formatting and copyright assignment before submission. If you notice any discrepancies between this class, the accompanying templates, and the official specifications, the latter should take precedence. Please also let ``us'' know by e-mailing \email{thesis@mit.edu}.\footnote{At the moment it's not clear who this address forwards to; the official specifications give \email{mit-theses@mit.edu} as a contact address}
 %
 %\subsection{Example documents}
 %
-% The directory |demo| included with the class source code contains files named |demo-N.tex|; compile any one of these, or use |make demo| in the top directory of the source code, to produce (an) example PDF(s) generated with different class options and other settings.
+% The directory |demo| included with the class source code contains files named |demo-N.tex|; compile any one of these, or use |make demo| in the top directory of the source code, to produce (an) example PDF(s) using with different class options and other settings.
 %
 %\begin{tabular}{ll}
 %\toprule
 % {\bfseries\ttfamily demo-N.tex} & Features demonstrated \\
 %\midrule
-% 1 & |\documentclass[12pt,twoside]{mitthesis}| (defaults) \\
+% 1 & |\documentclass{mitthesis}| (defaults) \\
 % 2 & |draft| option and |drafthead| pagestyle \\
 % 3 & |leftblank| and |vi| options \\
 % 4 & |upcase| option and |headings| pagestyle \\
@@ -91,15 +91,61 @@
 %\bottomrule
 %\end{tabular}
 %
+% These documents are built using a set of template and example files, also in the |demo| directory. Here is some brief description of these files and their contents:
+%
+%\paragraph{\ttfamily main.tex}
+% A template 'master' file for the thesis. The command \cmd{\include} is used to include other files.
+%
+% To include appendices, use a single \cmd{\appendix} command followed by \cmd{\include} for each appendix.
+%
+% In order to produce a bibliography, the file uses the |biblatex| package. The lines:
+%\begin{verbatim}
+%\usepackage{biblatex}
+%\addbibresource{main.bib}
+%\end{verbatim}
+% \ldots load the package and tell it where to find bibliography entries for citations. The line:
+%\begin{verbatim}
+%\printbibliography
+%\end{verbatim}
+% \ldots causes the actual bibliography to be printed.
+%
+% |biblatex| is a modern, powerful package with many options for formatting citations and the bibliography itself, and for advanced usages like per-chapter bibliographies. For more information, see \href{http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf}{the |biblatex| documentation}.\footnote{Warning---that's a 300+ page PDF! Did we say `many options'?} You may instead wish to use older bibliography packages such as |natbib| or |cite|. For information on all of these, including some comparison, see the \href{https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management}{``Bibliography Management''} and \href{https://en.wikibooks.org/wiki/LaTeX/More_Bibliographies}{``More Bibliographies''} chapters of the \emph{\LaTeX\ Wikibook}.
+%
+%\paragraph{\ttfamily chap1.tex}
+% An example first chapter.  To get started, you may just want to replace the text and commands in that file as needed. In general though, for each new chapter you want to do the following:
+%
+%\begin{itemize}
+%  \item Make sure the name has the extension |.tex|. Otherwise, you can call it anything you want. For ease of use, all the examples use chap1, chap2, etc.
+%  \item Add a line to |main.tex| that reads \cmd{\include}\marg{chapter file}. The \meta{chapter file} should not include the |.tex| extension, because \LaTeX\ assumes that is there.
+%  \item The first line of each chapter should be: \cmd{\chapter}\marg{chapter title}. Use the commands \cmd{\section}\marg{section heading} and \cmd{\subsection}\marg{subsection heading} to further organize the chapter.
+%\end{itemize}
+%
+% In chapters and appendices, commands like \cmd{\cite}\marg{citation key} are used to refer to bibliography entries from |main.bib|.
+%
+%\paragraph{\ttfamily appa.tex} An example first appendix. In a file that is \cmd{\include}'d after the command \cmd{appendix}, the appendix title is still given \cmd{\chapter}\marg{appendix title}.\footnote{To remember this, think of each appendix as a ``chapter-level division'' of your thesis document.}
+%
+%\paragraph{\ttfamily main.bib}
+% This is the `database' of bibliography entries. When you cite a reference, you need to use the key you declare in |main.bib| for the entry. No one ever sees the keys, but you'll want to use something you will easily remember. For instance, if you had an entry that began:
+%\begin{verbatim}
+%@article{geer-1999,
+%  author = {Geer, Firstname},
+%  year = {1999},
+%...
+%\end{verbatim}
+% \ldots then you would use |\cite{geer-1999}| to reference it within your thesis.
+%
+% You can maintain |main.bib| manually, but popular citation management software that you may already use can probably export a |.bib| file for you. If you choose to maintain it manually, the ``Bibliography Management'' chapter of the \emph{\LaTeX\ Wikibook} includes \href{https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management#Entry_and_field_types_in_.bib_files}{a handy table} describing which fields are required and optional for different types of entries.
+%
+% You can also force your bibliography to include references that are never cited in your thesis. If you need to do this, add the entry or entries to |main.bib| and include \cmd{\nocite}\marg{keys} before \cmd{\printbibliography} in |main.tex|. \meta{keys} can be one or more keys, separated by commas, or an asterisk (|*|) to include \emph{all} entries from |main.bib|. This should be done for every entry which is not explicitly cited.
+%
 %\subsection{Preamble}
 %
 % To use this style, say something like (for dull, boring thesis format):
 %\begin{verbatim}
-%\documentclass[12pt]{mitthesis}
-%\pagestyle{plain}
+%\documentclass{mitthesis}
 %\end{verbatim}
 %
-% \ldots or, for fast drafts:
+% \ldots or, for compact drafts:
 %\begin{verbatim}
 %\documentclass[11pt,singlespace,draft]{mitthesis}
 %\pagestyle{drafthead}
@@ -107,7 +153,7 @@
 %
 % \ldots or, for Tech Reports:
 %\begin{verbatim}
-%\documentclass[12pt,twoside]{mitthesis}
+%\documentclass{mitthesis}
 %\pagestyle{headings}
 %\end{verbatim}
 %
@@ -250,13 +296,14 @@
 %\end{macro}
 %
 %\begin{macro}{leftblank}
-% Print ``This page intentionally left blank.'' on left pages.
+% Print ``This page intentionally left blank.'' on left pages. Has no effect if |oneside|.
 %
 %\changes{v1.13}{2005/05/13 19:57:40 (as "1.6")}{added (Kevin Fu via \texttt{boojum})}
 %    \begin{macrocode}
-\newif\if@leftblank \@leftblankfalse
-\DeclareOption{leftblank}{\typeout{Intentionally Leaving Pages Blank}
-\@leftblanktrue}
+\newif\if@leftblank\@leftblankfalse
+\DeclareOption{leftblank}{%
+  \typeout{Intentionally Leaving Pages Blank}
+  \@leftblanktrue}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -361,7 +408,7 @@
     \pulldownheader  % Bring header down from edge
     \pullupfooter  % Bring footer up
 }
-\else               % If one-sided printing.
+\else  % If one-sided printing.
 \def\ps@drafthead{
     \let\@mkboth\markboth
     \def\@oddfoot{\rm \today \hfil \sc \draftrmark}
@@ -650,7 +697,6 @@ requirements for the \@degreeword\ of \\
 %
 % For version 2.0, some fairly major changes were made. These include:
 %\begin{itemize}
-%\item |lgrind.sty| deleted. Authors wanting to include source code listings in their theses should consider the |listings| or |minted| packages (as suggested by the \href{https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings}{``Source Code Listings'' chapter} in the \emph{\LaTeX\ Wikibook}), or releasing their code in a citable, reusable way using a service such as \href{https://zenodo.org}{Zenodo}.
 %\end{itemize}
 %
 %\subsection{Notes}
