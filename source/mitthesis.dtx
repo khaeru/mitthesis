@@ -498,6 +498,12 @@ process all files:}
 %    \begin{macrocode}
 \@ifundefined{thechapter}{}{\def\thefigure{\thechapter-\arabic{figure}}}
 %    \end{macrocode}
+%
+% Don't double-space long chapter titles.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+\patchcmd{\@makechapterhead}{\raggedright}{\singlespacing \raggedright}{}{}
+%    \end{macrocode}
 %\end{macro}
 %
 %\subsection{Title page elements}
