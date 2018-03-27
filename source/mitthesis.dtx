@@ -503,6 +503,8 @@ process all files:}
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 \patchcmd{\@makechapterhead}{\raggedright}{\singlespacing \raggedright}{}{}
+\patchcmd{\section}{\normalfont}{\singlespacing\normalfont}{}{}
+\patchcmd{\subsection}{\normalfont}{\singlespacing\normalfont}{}{}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -763,7 +765,7 @@ requirements for the \@degreeword\ of \\
 %\begin{environment}{abstract}
 % Abstract environment.
 %    \begin{macrocode}
-\def\abstract{\subsection*{Abstract}\small\def\baselinestretch{1}\@normalsize}
+\def\abstract{\subsection*{Abstract}\singlespacing}
 \def\endabstract{\par}
 %    \end{macrocode}
 %\end{environment}
