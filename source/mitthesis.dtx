@@ -503,8 +503,8 @@ process all files:}
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 \patchcmd{\@makechapterhead}{\raggedright}{\singlespacing \raggedright}{}{}
-\patchcmd{\section}{\normalfont}{\singlespacing\normalfont}{}{}
-\patchcmd{\subsection}{\normalfont}{\singlespacing\normalfont}{}{}
+\patchcmd{\section}{\normalfont}{\singlespacing \raggedright \normalfont}{}{}
+\patchcmd{\subsection}{\normalfont}{\singlespacing \raggedright \normalfont}{}{}
 %    \end{macrocode}
 %\end{macro}
 %
