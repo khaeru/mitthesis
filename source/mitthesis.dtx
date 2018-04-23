@@ -499,7 +499,7 @@ process all files:}
 \@ifundefined{thechapter}{}{\def\thefigure{\thechapter-\arabic{figure}}}
 %    \end{macrocode}
 %
-% Don't double-space long chapter titles.
+% Don't double-space or hyphenate long chapter titles.
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 \patchcmd{\@makechapterhead}{\raggedright}{\singlespacing \raggedright}{}{}
@@ -553,7 +553,7 @@ process all files:}
 %\begin{macro}{\copyrightnoticetext}
 % By default, the thesis will be copyrighted to MIT. If you need to copyright the thesis to yourself, just specify the |vi| documentclass option. If for some reason you want to exactly specify the copyright notice text, use \cmd{\copyrightnoticetext}
 %
-% The copyright notice stuff is a tremendous mess. \cmd{\@copyrightnotice} is used by \cmd{\maketitle} to actually put text on the page; it defaults to ``Copyright MIT 19xx.  All rights reserved.'' \cmd{\copyrightnoticetext} takes an argument and defined \cmd{\@copyrightnotice} to that argument.  \cmd{\copyrightnotice} takes an argument, and calls \cmd{\copyrightnoticetext} with that argument, preceeded by a copyright symbol and followed by ``All rights reserved.'' and the standard permission notice.
+% The copyright notice stuff is a tremendous mess. \cmd{\@copyrightnotice} is used by \cmd{\maketitle} to actually put text on the page; it defaults to ``Copyright MIT 19xx.  All rights reserved.'' \cmd{\copyrightnoticetext} takes an argument and defines \cmd{\@copyrightnotice} to that argument.  \cmd{\copyrightnotice} takes an argument, and calls \cmd{\copyrightnoticetext} with that argument, preceeded by a copyright symbol and followed by ``All rights reserved.'' and the standard permission notice.
 %
 % If you use the |vi| class option, \cmd{\copyrightnoticetext} is used to set the copyright to ``(C) Your Name, Current Year in Roman Numerals.'' followed by the permission notice.
 %
@@ -612,128 +612,53 @@ reserved.\par\permission}}
 % These commands have similar syntax:
 %\begin{itemize}
 %  \item \cmd{\supervisor}\marg{name}\marg{title}
-%  \item \cmd{\chairman}\marg{name}\marg{title}
+%  \item \cmd{\advisor}\marg{name}\marg{title}
+%  \item \cmd{\chairman}\marg{name}\marg{title}\marg{role}
 %\end{itemize}
 %
 %\begin{macro}{\supervisor}
-% Name and title of the thesis supervisor. Use the command more than once if there is more than one supervisor.
+% Issue \cmd{\chairman}\marg{name}\marg{title} \textbf{at least once} in the document preamble to set, respectively, the full name and academic title (``\ldots Professor of \ldots'') for each of your thesis supervisor(s).
 %
-% Since there can be more than one supervisor, we build the appropriate boxes for the |titlepage| and the |abstractpage| as the user makes multiple calls to \cmd{\supervisor}.
+% Since there can be more than one supervisor, we build the appropriate boxes for the title page (\cmd{\@signatures}) and the abstract page (\cmd{\@abstractcommittee}) as the user makes multiple calls to these commands.
 %
 %    \begin{macrocode}
-\newbox\@titlesupervisor
-\newbox\@abstractsupervisor
-\def\supervisor#1#2{\setbox\@titlesupervisor\vbox
-  {\unvbox\@titlesupervisor \vskip 10pt% plus 1fil minus 1fil
-  \def\baselinestretch{1}\large
-  \signature{Certified by}{#1 \\ #2 \\ Thesis Supervisor}}
-  \setbox\@abstractsupervisor\vbox{\unvbox\@abstractsupervisor
-  \vskip\baselineskip \def\baselinestretch{1}\@normalsize
-  \par\noindent Thesis Supervisor: #1 \\ Title: \parbox[t]{0.8\linewidth}{#2}}}
+\newbox\@signatures
+\newbox\@abstractcommittee
+\def\supervisor#1#2{%
+  \setbox\@signatures\vbox
+  {\unvbox\@signatures\par
+   \@signature{Certified by}{#1}{#2}{Thesis Supervisor}}
+  \setbox\@abstractcommittee\vbox
+  {\unvbox\@abstractcommittee\par
+   \singlespacing\raggedright Thesis Supervisor: #1\par
+   Title: \parbox[t]{0.8\linewidth}{#2}}}
 %    \end{macrocode}
 %\end{macro}
 %
 %\begin{macro}{\advisor}
-% Thesis committee member or advisor; similar to \cmd{\supervisor}, but the words ``Thesis supervisor'' are not used to describe them.
+% Thesis committee member or advisor; similar to \cmd{\supervisor}, but the words ``Thesis Supervisor'' are not used to describe them on the title page or abstract page.
 %
 %    \begin{macrocode}
-\newbox\@titleadvisor
-\newbox\@abstractadvisor
-\def\advisor#1#2{\setbox\@titleadvisor\vbox
-  {\unvbox\@titleadvisor \vskip 10pt% plus 1fil minus 1fil
-  \def\baselinestretch{1}\large
-  \signature{Certified by}{#1 \\ #2}}
-  \setbox\@abstractadvisor\vbox{\unvbox\@abstractadvisor
-  \vskip\baselineskip \def\baselinestretch{1}\@normalsize
-  \par\noindent #1 \\ Title: \parbox[t]{0.8\linewidth}{#2}}}
+\def\advisor#1#2{%
+  \setbox\@signatures\vbox
+  {\unvbox\@signatures\par\@signature{Certified by}{#1}{#2}{}}
+  \setbox\@abstractcommittee\vbox
+  {\unvbox\@abstractcommittee\par
+   \singlespacing\raggedright #1\par
+   Title: \parbox[t]{0.8\linewidth}{#2}}}
 %    \end{macrocode}
 %\end{macro}
 %
 %\begin{macro}{\chairman}
-% Name and title of the department committee on graduate theses. Note that this is \emph{not} the chair of your individual thesis committee, nor your dissertation defence chair.
+% Not the chair of your individual thesis committee, nor your dissertation defense chair, but someone holding an administrative role in your department to officially accept theses from graduating students. The first two arguments are the same as for \cmd{\supervisor}; \meta{role} is the title of their role in the department (something like ``Chair, Department Graduate Committee'').
 %
 %    \begin{macrocode}
-\def\chairman#1#2{\gdef\@chairmanname{#1}\gdef\@chairmantitle{#2}}
+\def\chairman#1#2#3{\setbox\@signatures\vbox
+  {\unvbox\@signatures\par\@signature{Accepted by}{#1}{#2}{#3}}}
 %    \end{macrocode}
 %\end{macro}
 %
-%\begin{macro}{\maketitle}
-% Make the titlepage based on the above information. If the |upcase| class option was given, \cmd{\choosecase} is defined to change the (expanded) argument to uppercase; otherwise, it is a dummy.
-%
-%    \begin{macrocode}
-\def\maketitle{\begin{titlepage}
-\large
-{\def\baselinestretch{1.2}\Large\bf \choosecase{\@title} \par}
-by\par
-{\Large  \choosecase{\@author}}\par
-\@prevdegrees\par
-\choosecase{Submitted to the \@department \\
-in partial fulfillment of the requirements for the \@degreeword\ of}\par
-\choosecase{\@degree}\par
-\choosecase{at the}\par
-\MIT\par
-\@degreemonth\ \@degreeyear\par
-\@copyrightnotice\par
-\vskip 3\baselineskip
-\signature{Author}{\@department \\ \@thesisdate}\par
-\vfill
-\unvbox\@titlesupervisor
-\unvbox\@titleadvisor\par
-\vfill
-\signature{Accepted by}{\@chairmanname \\ \@chairmantitle}
-\vfill
-\end{titlepage}}
-%    \end{macrocode}
-%\end{macro}
-%
-%\begin{environment}{abstractpage}
-% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself. If you need more control over the format of the page, you can use the |abstract| environment, which puts the word ``Abstract" at the beginning and single spaces its text.
-%
-% This environment should probably be called |abstract|, but we want people to also be able to get at the more basic |abstract| environment.
-%
-%\changes{v0.4}{1990}{Changed from |\unvbox| to |\unvcopy| for use with multiple copies of abstract page (\texttt{krishna})}
-%
-%    \begin{macrocode}
-\def\abstractpage{\cleardoublepage
-\setcounter{savepage}{\thepage}
-\begin{center}{\large{\bf \@title} \\
-by \\
-\@author \\[\baselineskip]}
-\par
-\def\baselinestretch{1}\@normalsize
-Submitted to the \@department \\
-on \@thesisdate, in partial fulfillment of the \\
-requirements for the \@degreeword\ of \\
-\@degree
-\end{center}\par
-\begin{abstract}}
-
-\def\endabstractpage{\end{abstract}
-\noindent\unvcopy\@abstractsupervisor
-\unvcopy\@abstractadvisor
-\newpage}
-%    \end{macrocode}
-%\end{environment}
-%
-%\begin{macro}{savepage}
-% This counter is used to save the page number for the second copy of the abstract.
-%    \begin{macrocode}
-\newcounter{savepage}
-%    \end{macrocode}
-%\end{macro}
-%
-%\begin{environment}{titlepage}
-% You can use the |titlepage| environment to do it all yourself if you don't want to use \cmd{\maketitle}. In the |titlepage| environment, the paragraph skip is infinitely stretchable, so if you leave a blank line between lines that you want space between, the space will stretch so that the title page fills up the entire page.
-%
-%    \begin{macrocode}
-\def\titlepage{\cleardoublepage\centering
-  \thispagestyle{empty}
-  \parindent 0pt \parskip 10pt plus 1fil minus 1fil
-  \def\baselinestretch{1}\@normalsize\vbox to \vsize\bgroup\vbox to 9in\bgroup}
-% The \kern0pt pushes any depth into the height.  Thanks to Richard Stone.
-\def\endtitlepage{\par\kern 0pt\egroup\vss\egroup\newpage}
-%    \end{macrocode}
-%\end{environment}
+%\subsection{Internal commands for the title page}
 %
 %\DescribeMacro{\MIT}
 %\DescribeMacro{\Mit}
@@ -754,11 +679,75 @@ requirements for the \@degreeword\ of \\
 %    \end{macrocode}
 %\end{macro}
 %
-%\begin{macro}{\signature}
-% Giving \cmd{\signature}\marg{prefix}\marg{person} prints a dotted signature line with the \meta{prefix} at the left end, followed by the name/title given by \meta{person}.
+%\begin{macro}{\@signature}
+% Giving \cmd{\@signature}\marg{prompt}\marg{name}\marg{title}\marg{role} prints a dotted signature line with the \meta{prompt} at the left end, followed by the \meta{name}, \meta{title}, and \meta{role} (may be empty). The first two are \cmd{\large} and the last two are in a normal size font.
+%
 %    \begin{macrocode}
-\def\signature#1#2{\par\noindent#1\dotfill\null\\*
-  {\raggedleft #2\par}}
+\def\@signature#1#2#3#4{%
+  \singlespacing\noindent\large #1\dotfill\par
+  {\raggedleft\large #2\par\@normalsize #3\par%
+  \if #4\empty \else #4\par\fi}}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@titleskip}
+% Spacing between the title/information block lines on the title page. This can by any \TeX\ primitive that ends horizontal mode and produces any amount of vertical space, \emph{e.g.} |\vskip 10pt|, \cmd{\vfil}, \cmd{\vfill}, or |\par|. We use \cmd{\vfil} to flexibly space out items to take up the whole page height.
+%
+%    \begin{macrocode}
+\def\@titleskip{\vfil}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\maketitle}
+% Make the titlepage based on the above information. If the |upcase| class option was given, \cmd{\choosecase} is defined to change the (expanded) argument to uppercase; otherwise, it is a dummy.
+%
+%    \begin{macrocode}
+\def\maketitle{%
+% Add the author's signature line here, after \@department and \@thesisdate
+% have been set
+\setbox\@signatures\vbox
+  {\@signature{Author}{\@department}{\@thesisdate}{}\par
+   \unvbox\@signatures}
+\cleardoublepage%
+\thispagestyle{empty}%
+{\singlespacing%
+{\centering\large%
+{\Large\bf \choosecase{\@title}}\@titleskip
+by\@titleskip
+{\Large \choosecase{\@author}}\@titleskip
+\@prevdegrees\@titleskip
+\choosecase{Submitted to the \@department\\*in partial fulfillment of the
+            requirements for the \@degreeword\ of}\@titleskip
+\choosecase{\@degree}\@titleskip
+\choosecase{at the}\@titleskip
+\MIT\@titleskip
+\@degreemonth\ \@degreeyear\@titleskip
+\@copyrightnotice\@titleskip}
+\vfil\vfil\vfil  % Extra space here
+\unvbox\@signatures}%
+\newpage}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{environment}{titlepage}
+% If you don't want to use \cmd{\maketitle}, you can use the |titlepage| environment to do it all yourself. Use \cmd{\MIT}, \cmd{\copyrightnotice}, etc. In the |titlepage| environment, the paragraph skip is infinitely stretchable, so if you leave a blank line between lines that you want space between, the space will stretch so that the title page fills up the entire page.
+%
+%    \begin{macrocode}
+\def\titlepage{\cleardoublepage\centering
+  \thispagestyle{empty}
+  \parindent 0pt \parskip 10pt plus 1fil minus 1fil
+  \def\baselinestretch{1}\@normalsize\vbox to \vsize\bgroup\vbox to 9in\bgroup}
+% The \kern0pt pushes any depth into the height.  Thanks to Richard Stone.
+\def\endtitlepage{\par\kern 0pt\egroup\vss\egroup\newpage}
+%    \end{macrocode}
+%\end{environment}
+%
+%\subsection{Abstract page elements}
+%
+%\begin{macro}{savepage}
+% This counter is used to save the page number for the second copy of the abstract.
+%    \begin{macrocode}
+\newcounter{savepage}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -767,6 +756,33 @@ requirements for the \@degreeword\ of \\
 %    \begin{macrocode}
 \def\abstract{\subsection*{Abstract}\singlespacing}
 \def\endabstract{\par}
+%    \end{macrocode}
+%\end{environment}
+%
+%\begin{environment}{abstractpage}
+% The |abstractpage| environment sets up everything on the page except the text itself. The title and other header material are put at the top of the page, and the supervisors are listed at the bottom. A new page is begun both before and after. Of course, an abstract may be more than one page itself. If you need more control over the format of the page, you can use the |abstract| environment, which puts the word ``Abstract" at the beginning and single spaces its text.
+%
+% This environment should probably be called |abstract|, but we want people to also be able to get at the more basic |abstract| environment.
+%
+%\changes{v0.4}{1990}{Changed from |\unvbox| to |\unvcopy| for use with multiple copies of abstract page (\texttt{krishna})}
+%
+%    \begin{macrocode}
+\def\abstractpage{
+\cleardoublepage
+\setcounter{savepage}{\thepage}
+{\centering
+{\large\bf \@title}\par
+by\par
+{\large \@author}\par
+{\singlespacing Submitted to the \@department\par
+on \@thesisdate, in partial fulfillment of the\par
+requirements for the \@degreeword\ of\par
+\@degree\par}}%
+\begin{abstract}}
+
+\def\endabstractpage{\end{abstract}%
+{\unvcopy\@abstractcommittee}%
+\newpage}
 %    \end{macrocode}
 %\end{environment}
 %
