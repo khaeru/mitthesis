@@ -474,23 +474,23 @@ process all files:}
 % Redefine \cmd{\chapter} to always start on an odd page. Should make no difference in |oneside| mode.
 %
 %    \begin{macrocode}
-\if@leftblank
-% Prints "THIS PAGE INTENTIONALLY LEFT BLANK" on blank pages.
-\def\chapter{\clearpage\ifodd\c@page\else
-  \hbox{}\par\vfill\centerline%
-  {THIS PAGE INTENTIONALLY LEFT BLANK}%
-  \vfill\newpage\fi
+\def\mit@clearleftblank{
+  \if@leftblank
+    % Print "THIS PAGE INTENTIONALLY LEFT BLANK" on blank pages
+    \clearpage%
+    \ifodd\c@page\else
+      \hbox{}\par\vfill\centerline%
+      {THIS PAGE INTENTIONALLY LEFT BLANK}%
+      \vfill\newpage%
+    \fi
+  \else
+    \cleardoublepage%
+  \fi}
+\def\chapter{\mit@clearleftblank
   \thispagestyle{plain}  % Page style of chapter page is 'plain'
   \global\@topnum\z@  % Prevents figures from going at top of page.
   \@afterindentfalse  % Suppresses indent in first paragraph.  Change
   \secdef\@chapter\@schapter}  % to \@afterindenttrue to have indent.
-\else
-\def\chapter{\cleardoublepage  % Starts new page.
-  \thispagestyle{plain}  % Page style of chapter page is 'plain'
-  \global\@topnum\z@  % Prevents figures from going at top of page.
-  \@afterindentfalse  % Suppresses indent in first paragraph.  Change
-  \secdef\@chapter\@schapter}  % to \@afterindenttrue to have indent.
-\fi
 %    \end{macrocode}
 %
 % Format figure numbers like ``\meta{chapter number}-\meta{figure number}'', instead of with a period.
@@ -768,7 +768,7 @@ by\@titleskip
 %
 %    \begin{macrocode}
 \def\abstractpage{
-\cleardoublepage
+\mit@clearleftblank
 \setcounter{savepage}{\thepage}
 {\centering
 {\large\bf \@title}\par
